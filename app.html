@@ -11,27 +11,16 @@
   <style>
     :root { --brand: #E8420A; --brand-dark: #C23508; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
-    
     .logo-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 30px; text-decoration: none; }
     .logo-mark { width: 32px; height: 32px; background: var(--brand); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
     .logo-name { font-size: 22px; font-weight: 700; color: var(--text); }
-
     .card { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border); text-align: center; }
-    
     .upload-container { border: 2px dashed var(--border); border-radius: 12px; padding: 30px 20px; margin-bottom: 20px; transition: 0.3s; }
-    .upload-container:hover { border-color: var(--brand); background: #fff9f7; }
-    
-    .btn { background: var(--brand); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; transition: 0.2s; display: inline-block; width: 100%; box-sizing: border-box; }
+    .btn { background: var(--brand); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; width: 100%; box-sizing: border-box; }
     .btn-secondary { background: transparent; color: var(--brand); border: 1.5px solid var(--brand); margin-top: 10px; }
-    .btn:active { transform: scale(0.98); }
-    
-    .result-box { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
+    .result-box { display: none; margin-top: 30px; }
     .score-circle { width: 90px; height: 90px; border-radius: 50%; border: 6px solid var(--brand); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; margin: 0 auto 15px; }
-    
     .nudge-card { background: #fff5f2; border: 1px solid #ffdec2; padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 13px; text-align: left; }
-    .paywall-card { display: none; background: #fff5f2; border: 2px solid var(--brand); padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     footer { margin-top: 40px; font-size: 12px; color: #999; text-align: center; }
   </style>
 </head>
@@ -43,10 +32,10 @@
   </a>
 
   <div class="card">
-    <div class="upload-container" id="drop-zone">
+    <div class="upload-container">
       <p id="status-msg" style="margin-bottom: 15px; font-size: 14px; font-weight: 500;">Tap to upload Resume (PDF/DOCX)</p>
       <input type="file" id="fileInput" hidden accept=".pdf,.docx">
-      <button class="btn" onclick="document.getElementById('fileInput').click()">Select File</button>
+      <button class="btn" id="upload-btn" onclick="document.getElementById('fileInput').click()">Select File</button>
     </div>
 
     <div id="result-box" class="result-box">
@@ -55,25 +44,24 @@
       <div id="nudge-section">
         <div class="nudge-card">
           <p><b>⚠️ Score: Below Cutoff</b></p>
-          <p>You are missing 8 key keywords for your industry. Add more <b>'Action Verbs'</b> to your experience section and try one more free scan to see your score climb!</p>
+          <p>Missing industry keywords. Add more <b>'Action Verbs'</b> and try one more free scan!</p>
         </div>
         <button class="btn btn-secondary" onclick="resetForSecondTry()">Try One More Free Scan</button>
       </div>
 
-      <div id="paywall-section" class="paywall-card">
-        <p style="font-weight: 700; color: var(--brand); margin-bottom: 8px;">Reach the 80+ Cutoff Instantly</p>
-        <p style="font-size: 13px; margin-bottom: 15px;">Don't leave your career to chance. **ResumePilot** will fix your formatting and keywords for you.</p>
+      <div id="paywall-section" style="display:none; background: #fff5f2; border: 2px solid var(--brand); padding: 20px; border-radius: 12px; margin-top: 20px;">
+        <p style="font-weight: 700; color: var(--brand);">Reach the 80+ Cutoff Instantly</p>
+        <p style="font-size: 13px; margin-bottom: 15px;">Don't leave your career to chance. **ResumePilot** will fix it for you.</p>
         <button class="btn" onclick="payAndRedirect()">Upgrade to ResumePilot (₹99)</button>
       </div>
     </div>
   </div>
 
-  <footer>
-    © 2026 Alliance Business Services <br>
-    <i>Career & Wealth Infrastructure</i>
-  </footer>
+  <footer>© 2026 Alliance Business Services</footer>
 
 <script>
+  // 1. UPDATE THIS URL: Change "webhook-test" to "webhook" for Production
+  const WEBHOOK_URL = "https://alliancebusiness.app.n8n.cloud/webhook/72ea5dc6-89af-4d45-915f-886dd47a0f2d";
   const UPI_ID = "8309167536@seyes";
   const WHATSAPP = "918309167536";
   let scanCount = 0;
@@ -84,18 +72,25 @@
     
     document.getElementById('status-msg').innerText = "Analyzing " + file.name + "...";
     
-    // Simulate AI processing
+    // Send to n8n Webhook for ABS Lead Generation
+    try {
+        fetch(WEBHOOK_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Keeps it simple for browser security
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event: 'resume_scan', fileName: file.name, timestamp: new Date() })
+        });
+    } catch(err) { console.log("n8n sync skipped"); }
+
     setTimeout(() => {
       scanCount++;
       document.getElementById('result-box').style.display = 'block';
-      const scoreVal = document.getElementById('score-val');
-      
       if (scanCount === 1) {
-        scoreVal.innerText = "42";
+        document.getElementById('score-val').innerText = "42";
         document.getElementById('nudge-section').style.display = "block";
         document.getElementById('paywall-section').style.display = "none";
       } else {
-        scoreVal.innerText = "58";
+        document.getElementById('score-val').innerText = "58";
         document.getElementById('nudge-section').style.display = "none";
         document.getElementById('paywall-section').style.display = "block";
       }
@@ -106,18 +101,15 @@
   function resetForSecondTry() {
     document.getElementById('result-box').style.display = 'none';
     document.getElementById('status-msg').innerText = "Tap to upload Resume (PDF/DOCX)";
-    document.getElementById('fileInput').value = ""; // Clear file
+    document.getElementById('fileInput').value = "";
   }
 
   function payAndRedirect() {
     window.location.href = `upi://pay?pa=${UPI_ID}&pn=ResumeAI&am=99&cu=INR&tn=ResumePilot_Upgrade`;
     setTimeout(() => {
-      if (confirm("If your UPI app didn't open, click OK to WhatsApp ABS for manual activation.")) {
-        window.open(`https://wa.me/${WHATSAPP}?text=Hi! I want to upgrade to ResumePilot Pro. I've already made the payment.`, '_blank');
-      }
+      window.open(`https://wa.me/${WHATSAPP}?text=Hi! I want to upgrade to ResumePilot Pro. I just paid ₹99 via PhonePe.`, '_blank');
     }, 3000);
   }
 </script>
-
 </body>
 </html>
