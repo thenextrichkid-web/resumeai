@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Alliance Business Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--brand:#E8420A;--brand-dark:#C23508;--brand-light:#FEF0EB;--text:#1a1a1a;--text-secondary:#6b6b6b;--border:rgba(0,0,0,0.1);--bg:#fafaf8;--bg-card:#ffffff;--bg-surface:#f4f3f0;--green:#1D9E75;--green-light:#E1F5EE}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    nav{border-bottom:0.5px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;max-width:680px;margin:0 auto}
+    .nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-mark{width:28px;height:28px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center}
+    .logo-mark svg{width:14px;height:14px;fill:white}
+    .logo-name{font-size:15px;font-weight:500;color:var(--text)}
+    .page{max-width:680px;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+    .abs-badge{display:inline-flex;align-items:center;gap:7px;background:var(--brand-light);color:var(--brand-dark);font-size:12px;font-weight:500;padding:5px 13px;border-radius:99px;margin-bottom:1.25rem}
+    h1{font-family:'Instrument Serif',serif;font-size:32px;font-weight:400;line-height:1.2;margin-bottom:1rem}
+    h1 em{font-style:italic;color:var(--brand)}
+    .intro{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:2rem}
+    .story-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:2rem}
+    .story-label{font-size:11px;font-weight:500;color:var(--text-secondary);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+    .story-text{font-size:14px;color:var(--text);line-height:1.8}
+    .story-text p{margin-bottom:12px}
+    .story-text p:last-child{margin-bottom:0}
+    h2{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;margin-bottom:1rem}
+    .services-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:2rem}
+    .svc-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:12px;padding:1.1rem}
+    .svc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px}
+    .svc-title{font-size:14px;font-weight:500;margin-bottom:4px}
+    .svc-desc{font-size:12px;color:var(--text-secondary);line-height:1.55}
+    .si-brand{background:var(--brand-light)}
+    .si-green{background:var(--green-light)}
+    .si-blue{background:#E6F1FB}
+    .si-amber{background:#FAEEDA}
+    .mission-block{background:var(--bg-surface);border-radius:14px;padding:1.5rem;margin-bottom:2rem;border-left:3px solid var(--brand)}
+    .mission-block p{font-size:14px;color:var(--text);line-height:1.8;font-style:italic}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-primary{background:var(--brand);color:white;border:none;padding:12px 24px;border-radius:99px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity .15s}
+    .btn-primary:hover{opacity:.87}
+    .btn-ghost{background:transparent;color:var(--text);border:0.5px solid rgba(0,0,0,0.2);padding:12px 24px;border-radius:99px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block}
+    .btn-ghost:hover{background:var(--bg-surface)}
+    footer{border-top:0.5px solid var(--border);padding:1.5rem 1.25rem;max-width:680px;margin:0 auto;font-size:12px;color:var(--text-secondary)}
+    a{color:var(--brand)}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-logo">
+      <div class="logo-mark"><svg viewBox="0 0 18 18"><path d="M9 2L3 6v6l6 4 6-4V6L9 2z"/></svg></div>
+      <span class="logo-name">ResumeAI</span>
+    </a>
+    <a href="/" style="font-size:13px;color:var(--text-secondary);text-decoration:none">← Back to home</a>
+  </nav>
+
+  <div class="page">
+    <div class="abs-badge">Alliance Business Services</div>
+    <h1>We build AI tools that solve <em>real problems</em></h1>
+    <p class="intro">Alliance Business Services is an AI consulting agency based in India. We help individuals and businesses use artificial intelligence to work smarter, grow faster, and compete globally.</p>
+
+    <div class="story-card">
+      <div class="story-label">The story behind ResumeAI</div>
+      <div class="story-text">
+        <p>ResumeAI was not built in a boardroom. It was built out of personal frustration.</p>
+        <p>Our founder Mr.Ajay Reddy, spent months applying to jobs and getting zero responses. Not because of a lack of skills or experience — but because of a 23/100 ATS score on a resume that was never optimised for automated screening. 75% of resumes never reach a human recruiter. They are rejected silently by software.</p>
+        <p>That frustration experience gave birth to this product. A tool that gives every job seeker — especially freshers and mid-level professionals in India — a fair shot at being seen. We built it with AI, launched it for free, and growing it one user at a time.</p>
+        <p>This is what we do at Alliance Business Services: we find real problems, build AI-powered solutions, and make them accessible.</p>
+      </div>
+    </div>
+
+    <div class="mission-block">
+      <p>"Our mission is to make AI accessible and practical for everyone in India — not just large corporations. Every job seeker, small business, and professional deserves to benefit from the power of artificial intelligence."</p>
+    </div>
+
+    <h2>Our services</h2>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon si-brand">🤖</div>
+        <div class="svc-title">AI consulting</div>
+        <div class="svc-desc">We help businesses identify where AI can save time, reduce costs, and improve results. Strategy, implementation, and training.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon si-green">🛠️</div>
+        <div class="svc-title">AI product development</div>
+        <div class="svc-desc">We design and build custom AI-powered tools and applications for businesses — from chatbots to document automation.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon si-blue">📊</div>
+        <div class="svc-title">Process automation</div>
+        <div class="svc-desc">We automate repetitive business workflows using AI — lead management, document processing, customer support, and more.</div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon si-amber">🎓</div>
+        <div class="svc-title">AI training workshops</div>
+        <div class="svc-desc">Hands-on workshops for teams and individuals on how to use AI tools effectively in their day-to-day work.</div>
+      </div>
+    </div>
+
+    <h2>Work with us</h2>
+    <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:1.25rem">Whether you are a business looking to implement AI, a startup that needs an AI product built, or an individual who wants to learn — we would love to hear from you.</p>
+    <div class="cta-row">
+      <a href="mailto:alliancebusiness.abs@gmail.com" class="btn-primary">Email us</a>
+      <a href="/app.html" class="btn-ghost">Try ResumeAI free</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Alliance Business Services. AI Agency &amp; Consulting, India. &nbsp;|&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;|&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;|&nbsp;
+    <a href="/about.html">About</a>
+  </footer>
+</body>
+</html>
