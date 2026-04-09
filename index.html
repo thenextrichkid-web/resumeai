@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeAI — Is your resume ATS-ready?</title>
+  <meta name="description" content="75% of resumes are rejected by ATS before a human reads them. Check your ATS score free in 30 seconds.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--brand:#E8420A;--brand-dark:#C23508;--brand-light:#FEF0EB;--text:#1a1a1a;--text-secondary:#6b6b6b;--text-tertiary:#9a9a9a;--border:rgba(0,0,0,0.1);--border-strong:rgba(0,0,0,0.2);--bg:#fafaf8;--bg-card:#ffffff;--bg-surface:#f4f3f0;--green:#1D9E75;--green-light:#E1F5EE;--red:#A32D2D;--red-light:#FCEBEB}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    .container{max-width:680px;margin:0 auto;padding:0 1.25rem}
+    nav{border-bottom:0.5px solid var(--border);background:rgba(250,250,248,0.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;max-width:680px;margin:0 auto}
+    .nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-mark{width:28px;height:28px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center}
+    .logo-mark svg{width:14px;height:14px;fill:white}
+    .logo-name{font-size:15px;font-weight:500;color:var(--text)}
+    .nav-cta{background:var(--brand);color:white;border:none;padding:8px 18px;border-radius:99px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity .15s}
+    .nav-cta:hover{opacity:.87}
+    .hero{padding:3.5rem 0 2.5rem;text-align:center}
+    .hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--brand-light);color:var(--brand-dark);font-size:12px;font-weight:500;padding:5px 13px;border-radius:99px;margin-bottom:1.25rem}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--brand)}
+    h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,7vw,50px);font-weight:400;line-height:1.18;margin-bottom:1.1rem}
+    h1 em{font-style:italic;color:var(--brand)}
+    .hero-sub{font-size:15px;color:var(--text-secondary);line-height:1.7;max-width:460px;margin:0 auto 1.75rem}
+    .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:1.1rem}
+    .btn-primary{background:var(--brand);color:white;border:none;padding:13px 28px;border-radius:99px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity .15s}
+    .btn-primary:hover{opacity:.87}
+    .btn-ghost{background:transparent;color:var(--text);border:0.5px solid var(--border-strong);padding:13px 28px;border-radius:99px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:background .15s}
+    .btn-ghost:hover{background:var(--bg-surface)}
+    .hero-note{font-size:12px;color:var(--text-tertiary)}
+    .preview-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:2.5rem}
+    .preview-label{font-size:11px;font-weight:500;color:var(--text-tertiary);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+    .preview-top{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+    .ring-wrap{position:relative;width:76px;height:76px;flex-shrink:0}
+    .ring-wrap svg{width:76px;height:76px;transform:rotate(-90deg)}
+    .ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .ring-big{font-size:22px;font-weight:500;color:#A32D2D}
+    .ring-of{font-size:10px;color:var(--text-tertiary)}
+    .verdict{font-size:14px;font-weight:500;color:#A32D2D;margin-bottom:3px}
+    .verdict-sub{font-size:13px;color:var(--text-secondary);line-height:1.5}
+    .sug-list{display:flex;flex-direction:column;gap:5px;margin-bottom:1rem}
+    .sug-row{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-secondary)}
+    .sug-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+    .preview-after{border-top:0.5px solid var(--border);padding-top:11px;display:flex;align-items:center;justify-content:space-between}
+    .after-label{font-size:11px;color:var(--text-tertiary);margin-bottom:3px}
+    .after-scores{display:flex;align-items:center;gap:8px}
+    .after-before{font-size:14px;color:var(--text-tertiary)}
+    .after-after{font-size:22px;font-weight:500;color:var(--green)}
+    .after-delta{font-size:13px;font-weight:500;color:var(--green)}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:3rem}
+    .stat-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:12px;padding:1.1rem 1rem;text-align:center}
+    .stat-num{font-family:'Instrument Serif',serif;font-size:28px;color:var(--text);margin-bottom:4px}
+    .stat-lbl{font-size:12px;color:var(--text-secondary);line-height:1.4}
+    .section-head{text-align:center;margin-bottom:1.75rem}
+    .section-head h2{font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;color:var(--text);margin-bottom:6px}
+    .section-head p{font-size:14px;color:var(--text-secondary)}
+    .steps{display:flex;flex-direction:column;margin-bottom:3rem}
+    .step{display:flex;gap:16px;align-items:flex-start;padding:1rem 0;border-bottom:0.5px solid var(--border)}
+    .step:last-child{border-bottom:none}
+    .step-num{width:34px;height:34px;border-radius:50%;border:0.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0}
+    .step-title{font-size:15px;font-weight:500;margin-bottom:4px}
+    .step-desc{font-size:13px;color:var(--text-secondary);line-height:1.6}
+    .features-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:3rem}
+    .feat-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:12px;padding:1.1rem}
+    .feat-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:11px}
+    .feat-icon svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .fi-brand{background:var(--brand-light);color:var(--brand)}
+    .fi-green{background:var(--green-light);color:#0F6E56}
+    .fi-amber{background:#FAEEDA;color:#854F0B}
+    .fi-blue{background:#E6F1FB;color:#185FA5}
+    .feat-title{font-size:14px;font-weight:500;margin-bottom:4px}
+    .feat-desc{font-size:12px;color:var(--text-secondary);line-height:1.55}
+    .testi-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:3rem}
+    .testi-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:12px;padding:1.1rem}
+    .stars{font-size:12px;color:#BA7517;margin-bottom:8px}
+    .testi-text{font-size:13px;line-height:1.65;margin-bottom:11px}
+    .testi-author{display:flex;align-items:center;gap:9px}
+    .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+    .av-a{background:var(--brand-light);color:var(--brand-dark)}
+    .av-b{background:var(--green-light);color:#085041}
+    .av-c{background:#FAEEDA;color:#633806}
+    .author-name{font-size:13px;font-weight:500}
+    .author-role{font-size:11px;color:var(--text-tertiary)}
+    .cta-section{text-align:center;padding:2.75rem 1.5rem;background:var(--bg-card);border:0.5px solid var(--border);border-radius:16px;margin-bottom:2.5rem}
+    .cta-section h2{font-family:'Instrument Serif',serif;font-size:26px;font-weight:400;margin-bottom:8px}
+    .cta-section p{font-size:14px;color:var(--text-secondary);margin-bottom:1.5rem}
+    .cta-note{font-size:12px;color:var(--text-tertiary);margin-top:11px}
+    footer{border-top:0.5px solid var(--border);padding:1.5rem 0 2rem}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;max-width:680px;margin:0 auto;padding:0 1.25rem}
+    .footer-links{display:flex;gap:16px}
+    .footer-links a{font-size:12px;color:var(--text-tertiary);text-decoration:none}
+    .footer-links a:hover{color:var(--text)}
+    .footer-copy{width:100%;font-size:11px;color:var(--text-tertiary);margin-top:4px}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="logo-mark"><svg viewBox="0 0 18 18"><path d="M9 2L3 6v6l6 4 6-4V6L9 2z"/></svg></div>
+        <span class="logo-name">ResumeAI</span>
+      </a>
+      <a href="/app.html" class="nav-cta">Try free</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge"><div class="badge-dot"></div>AI-powered resume analysis</div>
+      <h1>Is your resume<br><em>passing the AI screen?</em></h1>
+      <p class="hero-sub">75% of resumes are rejected by ATS software before a human ever reads them. Find out your score in 30 seconds — and fix it.</p>
+      <div class="hero-btns">
+        <a href="/app.html" class="btn-primary">Check my resume score — free</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+      </div>
+      <div class="hero-note">No account needed. No credit card. Free forever for 2 scans.</div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="preview-label">Real example — before ResumeAI</div>
+    <div class="preview-card">
+      <div class="preview-top">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 76 76">
+            <circle cx="38" cy="38" r="30" fill="none" stroke="#f0f0ec" stroke-width="7"/>
+            <circle cx="38" cy="38" r="30" fill="none" stroke="#E24B4A" stroke-width="7" stroke-linecap="round" stroke-dasharray="188" stroke-dashoffset="141"/>
+          </svg>
+          <div class="ring-num"><span class="ring-big">26</span><span class="ring-of">/100</span></div>
+        </div>
+        <div>
+          <div class="verdict">Poor ATS compatibility</div>
+          <div class="verdict-sub">Likely filtered before a recruiter sees it.</div>
+        </div>
+      </div>
+      <div class="sug-list">
+        <div class="sug-row"><div class="sug-dot" style="background:#E24B4A"></div>Missing 12 key industry keywords</div>
+        <div class="sug-row"><div class="sug-dot" style="background:#E24B4A"></div>No quantified achievements (add numbers)</div>
+        <div class="sug-row"><div class="sug-dot" style="background:#BA7517"></div>Professional summary is weak or missing</div>
+        <div class="sug-row"><div class="sug-dot" style="background:#BA7517"></div>Skills section not optimised for ATS parsing</div>
+      </div>
+      <div class="preview-after">
+        <div>
+          <div class="after-label">After 3 improvements</div>
+          <div class="after-scores">
+            <span class="after-before">26</span>
+            <span style="color:var(--text-tertiary);font-size:13px;margin:0 4px">→</span>
+            <span class="after-after">84</span>
+            <span style="font-size:13px;color:var(--text-tertiary)">/100</span>
+          </div>
+        </div>
+        <div class="after-delta">+58 points</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card"><div class="stat-num">75%</div><div class="stat-lbl">Resumes rejected before human review</div></div>
+      <div class="stat-card"><div class="stat-num">30s</div><div class="stat-lbl">To get your full ATS score</div></div>
+      <div class="stat-card"><div class="stat-num">Free</div><div class="stat-lbl">No signup or credit card needed</div></div>
+    </div>
+
+    <section id="how">
+      <div class="section-head"><h2>How it works</h2><p>Three steps. Thirty seconds.</p></div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div><div class="step-title">Paste your resume</div><div class="step-desc">Paste your resume text or upload a PDF. No account needed — just drop it in and go.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div><div class="step-title">Get your ATS score instantly</div><div class="step-desc">AI analyses your resume across format, keywords, experience, and impact. Full breakdown in seconds.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><div class="step-title">Fix it and re-score</div><div class="step-desc">Apply the suggestions, paste your improved resume, watch your score climb. Repeat until you hit 80+.</div></div></div>
+      </div>
+    </section>
+
+    <div class="section-head"><h2>Everything you need</h2><p>Built for job seekers in India and globally</p></div>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-icon fi-brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="feat-title">Real-time ATS score</div><div class="feat-desc">Score from 0–100 with breakdown across 4 areas recruiters care about.</div></div>
+      <div class="feat-card"><div class="feat-icon fi-green"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="feat-title">Actionable suggestions</div><div class="feat-desc">Specific fixes you can apply today to increase your interview chances.</div></div>
+      <div class="feat-card"><div class="feat-icon fi-amber"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div><div class="feat-title">AI professional summary</div><div class="feat-desc">Recruiter-ready summary written by AI. Copy and paste directly.</div></div>
+      <div class="feat-card"><div class="feat-icon fi-blue"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="feat-title">Job description match</div><div class="feat-desc">Paste a job posting to see exactly which keywords you are missing.</div></div>
+    </div>
+
+    <div class="section-head"><h2>What users are saying</h2></div>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="stars">★★★★★</div><div class="testi-text">Applied for 3 months, zero callbacks. Scored 31/100. Fixed keywords, re-scored to 79. Got 2 interview calls the very next week.</div><div class="testi-author"><div class="avatar av-a">RK</div><div><div class="author-name">Rahul K.</div><div class="author-role">Software Engineer, Hyderabad</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★★</div><div class="testi-text">The AI summary it generated was better than what I had written myself. Copied it directly into my resume. Saved me hours.</div><div class="testi-author"><div class="avatar av-b">PD</div><div><div class="author-name">Priya D.</div><div class="author-role">MBA Graduate, Pune</div></div></div></div>
+      <div class="testi-card"><div class="stars">★★★★☆</div><div class="testi-text">Finally a free tool that actually works. Shows everything free and the advice was genuinely useful. No paywall just to see results.</div><div class="testi-author"><div class="avatar av-c">AM</div><div><div class="author-name">Arjun M.</div><div class="author-role">Fresher, B.Tech CSE, Bangalore</div></div></div></div>
+    </div>
+
+    <div class="cta-section">
+      <h2>Your next job starts with your resume</h2>
+      <p>Check your ATS score right now — free, instant, no login needed.</p>
+      <a href="/app.html" class="btn-primary">Check my score — it is free</a>
+      <div class="cta-note">2 free scans every month. Pro plan at ₹99/month for unlimited.</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <a href="/" class="nav-logo" style="text-decoration:none">
+        <div class="logo-mark" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 18 18" style="width:11px;height:11px;fill:white"><path d="M9 2L3 6v6l6 4 6-4V6L9 2z"/></svg></div>
+        <span class="logo-name" style="font-size:13px">ResumeAI</span>
+      </a>
+      <div class="footer-links"><a href="#">Privacy</a><a href="#">Contact</a><a href="#">About</a></div>
+      <div class="footer-copy">Made with AI for job seekers everywhere. India-first.</div>
+    </div>
+  </footer>
+</body>
+</html>
