@@ -52,7 +52,7 @@
       <div id="paywall-section" style="display:none; background: #fff5f2; border: 2px solid var(--brand); padding: 20px; border-radius: 12px; margin-top: 20px;">
         <p style="font-weight: 700; color: var(--brand);">Reach the 80+ Cutoff Instantly</p>
         <p style="font-size: 13px; margin-bottom: 15px;">Don't leave your career to chance. **ResumePilot** will fix it for you.</p>
-        <button class="btn" onclick="payAndRedirect()">Upgrade to ResumePilot (₹99)</button>
+        <button class="btn" onclick="payAndRedirect()">Upgrade to ResumePilot (₹199)</button>
       </div>
     </div>
   </div>
@@ -107,7 +107,7 @@
   function payAndRedirect() {
     window.location.href = `upi://pay?pa=${UPI_ID}&pn=ResumeAI&am=99&cu=INR&tn=ResumePilot_Upgrade`;
     setTimeout(() => {
-      window.open(`https://wa.me/${WHATSAPP}?text=Hi! I want to upgrade to ResumePilot Pro. I just paid ₹99 via PhonePe.`, '_blank');
+      window.open(`https://wa.me/${WHATSAPP}?text=Hi! I want to upgrade to ResumePilot Pro. I just paid ₹199 via PhonePe.`, '_blank');
     }, 3000);
   }
 </script>
