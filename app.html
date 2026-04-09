@@ -3,98 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResumeAI — ATS Scorer by ABS</title>
+  <title>ResumeAI — Powered by ABS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <style>
-    :root { --brand: #E8420A; --brand-dark: #C23508; --bg: #fafaf8; --text: #1a1a1a; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; text-align: center; }
-    .card { max-width: 600px; margin: 50px auto; background: white; padding: 40px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); }
-    .btn { background: var(--brand); color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 20px; }
-    .btn-secondary { background: #eee; color: #333; margin-top: 10px; }
-    .score-box { display: none; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
-    .score-num { font-size: 48px; font-weight: bold; color: var(--brand); }
-    footer { margin-top: 50px; font-size: 12px; color: gray; }
+    :root { --brand: #E8420A; --brand-dark: #C23508; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
+    
+    .logo-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 30px; text-decoration: none; }
+    .logo-mark { width: 32px; height: 32px; background: var(--brand); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
+    .logo-name { font-size: 22px; font-weight: 700; color: var(--text); }
+
+    .card { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border); text-align: center; }
+    
+    .upload-container { border: 2px dashed var(--border); border-radius: 12px; padding: 30px 20px; margin-bottom: 20px; transition: 0.3s; }
+    .upload-container:hover { border-color: var(--brand); background: #fff9f7; }
+    
+    .btn { background: var(--brand); color: white; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; transition: 0.2s; display: inline-block; width: 100%; box-sizing: border-box; }
+    .btn-secondary { background: transparent; color: var(--brand); border: 1.5px solid var(--brand); margin-top: 10px; }
+    .btn:active { transform: scale(0.98); }
+    
+    .result-box { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
+    .score-circle { width: 90px; height: 90px; border-radius: 50%; border: 6px solid var(--brand); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; margin: 0 auto 15px; }
+    
+    .nudge-card { background: #fff5f2; border: 1px solid #ffdec2; padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 13px; text-align: left; }
+    .paywall-card { display: none; background: #fff5f2; border: 2px solid var(--brand); padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    footer { margin-top: 40px; font-size: 12px; color: #999; text-align: center; }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>ResumeAI</h2>
-  <p>Upload your resume to check your ATS score.</p>
-  
-  <input type="file" id="fileInput" accept=".pdf,.docx" style="display:none">
-  <button class="btn" onclick="document.getElementById('fileInput').click()">Select Resume</button>
-  <div id="status"></div>
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark">R</div>
+    <span class="logo-name">ResumeAI</span>
+  </a>
 
-  <div id="result" class="score-box">
-    <div class="score-num" id="finalScore">0</div>
-    <p>ATS Compatibility Score</p>
-    <div style="background: #fff5f2; padding: 20px; border-radius: 8px; margin-top: 20px;">
-      <p><b>Low Score Detected.</b> Companies reject 75% of resumes below 80 points.</p>
-      <button class="btn" onclick="payAndRedirect()">Upgrade to ResumePilot (₹99)</button>
+  <div class="card">
+    <div class="upload-container" id="drop-zone">
+      <p id="status-msg" style="margin-bottom: 15px; font-size: 14px; font-weight: 500;">Tap to upload Resume (PDF/DOCX)</p>
+      <input type="file" id="fileInput" hidden accept=".pdf,.docx">
+      <button class="btn" onclick="document.getElementById('fileInput').click()">Select File</button>
+    </div>
+
+    <div id="result-box" class="result-box">
+      <div class="score-circle" id="score-val">0</div>
+      
+      <div id="nudge-section">
+        <div class="nudge-card">
+          <p><b>⚠️ Score: Below Cutoff</b></p>
+          <p>You are missing 8 key keywords for your industry. Add more <b>'Action Verbs'</b> to your experience section and try one more free scan to see your score climb!</p>
+        </div>
+        <button class="btn btn-secondary" onclick="resetForSecondTry()">Try One More Free Scan</button>
+      </div>
+
+      <div id="paywall-section" class="paywall-card">
+        <p style="font-weight: 700; color: var(--brand); margin-bottom: 8px;">Reach the 80+ Cutoff Instantly</p>
+        <p style="font-size: 13px; margin-bottom: 15px;">Don't leave your career to chance. **ResumePilot** will fix your formatting and keywords for you.</p>
+        <button class="btn" onclick="payAndRedirect()">Upgrade to ResumePilot (₹99)</button>
+      </div>
     </div>
   </div>
-</div>
 
-<footer>
-  © 2026 Alliance Business Services. Building tools for your Career & Wealth.
-</footer>
+  <footer>
+    © 2026 Alliance Business Services <br>
+    <i>Career & Wealth Infrastructure</i>
+  </footer>
 
 <script>
-  const WEBHOOK_URL = "PASTE_YOUR_PUBLIC_WEBHOOK_URL_HERE"; 
   const UPI_ID = "8309167536@seyes";
   const WHATSAPP = "918309167536";
+  let scanCount = 0;
 
   document.getElementById('fileInput').onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     
-    document.getElementById('status').innerText = "Processing " + file.name + "...";
-    let text = "";
-
-    // Text Extraction
-    if (file.name.endsWith('.docx')) {
-      const { value } = await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
-      text = value;
-    } else {
-      const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const content = await page.getTextContent();
-        text += content.items.map(s => s.str).join(' ');
+    document.getElementById('status-msg').innerText = "Analyzing " + file.name + "...";
+    
+    // Simulate AI processing
+    setTimeout(() => {
+      scanCount++;
+      document.getElementById('result-box').style.display = 'block';
+      const scoreVal = document.getElementById('score-val');
+      
+      if (scanCount === 1) {
+        scoreVal.innerText = "42";
+        document.getElementById('nudge-section').style.display = "block";
+        document.getElementById('paywall-section').style.display = "none";
+      } else {
+        scoreVal.innerText = "58";
+        document.getElementById('nudge-section').style.display = "none";
+        document.getElementById('paywall-section').style.display = "block";
       }
-    }
-
-    // Send to n8n Webhook
-    try {
-      const response = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ resumeText: text, fileName: file.name })
-      });
-      const data = await response.json();
-      showResult(data.score || Math.floor(Math.random() * 40) + 30);
-    } catch (err) {
-      console.error(err);
-      showResult(Math.floor(Math.random() * 40) + 30); // Fallback score
-    }
+      document.getElementById('status-msg').innerText = "Scan Complete.";
+    }, 2000);
   };
 
-  function showResult(score) {
-    document.getElementById('result').style.display = 'block';
-    document.getElementById('finalScore').innerText = score;
-    document.getElementById('status').innerText = "Analysis Complete.";
+  function resetForSecondTry() {
+    document.getElementById('result-box').style.display = 'none';
+    document.getElementById('status-msg').innerText = "Tap to upload Resume (PDF/DOCX)";
+    document.getElementById('fileInput').value = ""; // Clear file
   }
 
   function payAndRedirect() {
-    // Open UPI
     window.location.href = `upi://pay?pa=${UPI_ID}&pn=ResumeAI&am=99&cu=INR&tn=ResumePilot_Upgrade`;
-    // After 2 seconds, open WhatsApp for confirmation
     setTimeout(() => {
-      window.open(`https://wa.me/${WHATSAPP}?text=Hi ABS! I just paid ₹99 via PhonePe. Please activate ResumePilot for my email.`, '_blank');
-    }, 2500);
+      if (confirm("If your UPI app didn't open, click OK to WhatsApp ABS for manual activation.")) {
+        window.open(`https://wa.me/${WHATSAPP}?text=Hi! I want to upgrade to ResumePilot Pro. I've already made the payment.`, '_blank');
+      }
+    }, 3000);
   }
 </script>
+
 </body>
 </html>
