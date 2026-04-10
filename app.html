@@ -65,60 +65,69 @@
     </div>
   </div>
 
-  <script>
+
+<script>
     let scanCount = 0;
     const fileIn = document.getElementById('fileInput');
 
-    fileIn.onchange = (e) => {
-      if(!e.target.files[0]) return;
-      scanCount++;
-      
-      document.getElementById('upload-stage').style.display = 'none';
-      document.getElementById('result-stage').style.display = 'block';
+    // MOBILE FIX: Reset the input value after every scan to allow re-selection
+    fileIn.onclick = (e) => { e.target.value = null; };
 
-      if(scanCount === 1) {
-        document.getElementById('score').innerText = "42";
-      } else {
-        triggerFlash();
-      }
+    fileIn.onchange = (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+        
+        // Visual feedback for mobile
+        document.getElementById('status').innerText = "INGESTING DATA...";
+        
+        if(scanCount === 0) {
+            // First Scan
+            setTimeout(() => {
+                scanCount = 1;
+                document.getElementById('upload-stage').style.display = 'none';
+                document.getElementById('result-stage').style.display = 'block';
+                document.getElementById('score').innerText = "42";
+            }, 1500);
+        } else {
+            // Second Scan
+            triggerFlash();
+        }
     };
 
     function triggerFlash() {
-      const flash = document.getElementById('flash');
-      const bar = document.getElementById('bar');
-      flash.style.display = 'flex';
-      
-      let p = 0;
-      const int = setInterval(() => {
-        p += 10;
-        bar.style.width = p + '%';
-        if(p >= 100) {
-          clearInterval(int);
-          setTimeout(() => {
-            flash.style.display = 'none';
-            enableSpaceMode();
-          }, 500);
-        }
-      }, 150);
+        const flash = document.getElementById('flash');
+        const bar = document.getElementById('bar');
+        flash.style.display = 'flex';
+        
+        let p = 0;
+        const int = setInterval(() => {
+            p += 10;
+            bar.style.width = p + '%';
+            if(p >= 100) {
+                clearInterval(int);
+                setTimeout(() => {
+                    flash.style.display = 'none';
+                    enableSpaceMode();
+                }, 500);
+            }
+        }, 150);
     }
 
     function enableSpaceMode() {
-      document.body.classList.add('space-mode');
-      document.getElementById('logo-text').innerText = "ResumeAI™ Pilot";
-      document.getElementById('score').innerText = "58";
-      document.getElementById('msg').innerHTML = "<b>THREAT DETECTED:</b> Hull Integrity Critical.";
-      document.getElementById('retry-btn').style.display = 'none';
-      document.getElementById('vip-btn').style.display = 'block';
-    }
-
-    function resetScan() {
-      document.getElementById('result-stage').style.display = 'none';
-      document.getElementById('upload-stage').style.display = 'block';
+        document.body.classList.add('space-mode');
+        document.getElementById('logo-text').innerText = "ResumeAI™ Pilot";
+        document.getElementById('result-stage').style.display = 'block';
+        document.getElementById('upload-stage').style.display = 'none';
+        document.getElementById('score').innerText = "58";
+        document.getElementById('msg').innerHTML = "<b>THREAT DETECTED:</b> Hull Integrity Critical.";
+        document.getElementById('retry-btn').style.display = 'none';
+        document.getElementById('vip-btn').style.display = 'block';
     }
 
     function redirectToPilot() {
-      // Hands off to the high-fidelity ResumePi_lot app
-      window.location.href = "https://resume-pi-chi.vercel.app/onboarding.html?source=resumeai&price=99";
+        const pilotName = "Pilot_Asset"; 
+        // ENSURE THIS LINK IS YOUR LIVE VERCEL URL
+        window.location.href = `https://resume-pi-chi.vercel.app/onboarding.html?source=resumeai&pilot=${pilotName}&price=99`;
     }
   </script>
 </body>
