@@ -73,14 +73,19 @@
     document.getElementById('status-msg').innerText = "Analyzing " + file.name + "...";
     
     // Send to n8n Webhook for ABS Lead Generation
-    try {
-        fetch(WEBHOOK_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Keeps it simple for browser security
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ event: 'resume_scan', fileName: file.name, timestamp: new Date() })
-        });
-    } catch(err) { console.log("n8n sync skipped"); }
+try {
+    await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            resumeText: text, 
+            fileName: file.name,
+            submittedAt: new Date().toISOString()
+        })
+    });
+} catch (err) {
+    console.log("Sync delayed, showing local score.");
+}
 
     setTimeout(() => {
       scanCount++;
