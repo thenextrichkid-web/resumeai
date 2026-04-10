@@ -67,29 +67,35 @@
 
 
 <script>
+<script>
     let scanCount = 0;
     const fileIn = document.getElementById('fileInput');
 
-    // MOBILE FIX: Reset the input value after every scan to allow re-selection
-    fileIn.onclick = (e) => { e.target.value = null; };
+    // MOBILE OPTIMIZATION: Clear the input whenever it's tapped
+    // This forces the "change" event to fire even if the user picks the same file
+    fileIn.addEventListener('click', function() {
+        this.value = null;
+    });
 
-    fileIn.onchange = (e) => {
+    fileIn.onchange = async (e) => {
         const file = e.target.files[0];
         if(!file) return;
         
-        // Visual feedback for mobile
-        document.getElementById('status').innerText = "INGESTING DATA...";
+        // Visual feedback for mobile users
+        document.getElementById('status').innerText = "CALIBRATING VECTORS...";
         
+        // Small delay to simulate "Thinking" (Good for UX)
+        await new Promise(r => setTimeout(r, 1200));
+
         if(scanCount === 0) {
-            // First Scan
-            setTimeout(() => {
-                scanCount = 1;
-                document.getElementById('upload-stage').style.display = 'none';
-                document.getElementById('result-stage').style.display = 'block';
-                document.getElementById('score').innerText = "42";
-            }, 1500);
+            // PHASE 1: Earth Results
+            scanCount = 1;
+            document.getElementById('upload-stage').style.display = 'none';
+            document.getElementById('result-stage').style.display = 'block';
+            document.getElementById('score').innerText = "42";
+            document.getElementById('status').innerText = "SCAN_COMPLETE: BELOW_CUTOFF";
         } else {
-            // Second Scan
+            // PHASE 2: Trigger the Space Transition
             triggerFlash();
         }
     };
@@ -97,38 +103,50 @@
     function triggerFlash() {
         const flash = document.getElementById('flash');
         const bar = document.getElementById('bar');
+        
+        // Force the flash to show on top of everything
         flash.style.display = 'flex';
         
         let p = 0;
         const int = setInterval(() => {
-            p += 10;
+            p += 5;
             bar.style.width = p + '%';
             if(p >= 100) {
                 clearInterval(int);
                 setTimeout(() => {
                     flash.style.display = 'none';
                     enableSpaceMode();
-                }, 500);
+                }, 400);
             }
-        }, 150);
+        }, 80); // Slightly faster for better mobile feel
     }
 
     function enableSpaceMode() {
         document.body.classList.add('space-mode');
         document.getElementById('logo-text').innerText = "ResumeAI™ Pilot";
-        document.getElementById('result-stage').style.display = 'block';
+        
+        // Hide Earth UI and show the Tactical Results
         document.getElementById('upload-stage').style.display = 'none';
+        document.getElementById('result-stage').style.display = 'block';
+        
         document.getElementById('score').innerText = "58";
-        document.getElementById('msg').innerHTML = "<b>THREAT DETECTED:</b> Hull Integrity Critical.";
+        document.getElementById('msg').innerHTML = "<b style='color:#ff4d00'>THREAT DETECTED:</b> Atmospheric Ceiling Reached. Manual Repair Required.";
+        
+        // Swap Buttons
         document.getElementById('retry-btn').style.display = 'none';
         document.getElementById('vip-btn').style.display = 'block';
+        
+        // Update status for the Space Deck feel
+        document.getElementById('status').innerText = "ORBITAL_STALL_DETECTED";
     }
 
     function redirectToPilot() {
         const pilotName = "Pilot_Asset"; 
-        // ENSURE THIS LINK IS YOUR LIVE VERCEL URL
-        window.location.href = `https://resume-pi-chi.vercel.app/onboarding.html?source=resumeai&pilot=${pilotName}&price=99`;
+        // UPDATED TO YOUR LIVE LINK
+        const PILOT_URL = "https://resume-pi-chi.vercel.app/onboarding.html";
+        window.location.href = `${PILOT_URL}?source=resumeai&pilot=${pilotName}&price=99`;
     }
+</script>
   </script>
 </body>
 </html>
