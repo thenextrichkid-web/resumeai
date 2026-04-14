@@ -9,7 +9,8 @@
         :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
         body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; }
         
-        .nav { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; border-bottom: 1px solid var(--border); background: white; }
+        /* HEADER FIX: Prevents overlapping methodology links */
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; border-bottom: 1px solid var(--border); background: white; position: sticky; top: 0; z-index: 1000; }
         .logo-wrap { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); }
         .diamond-mark { width: 20px; height: 20px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
         .logo-name { font-family: 'Instrument Serif', serif; font-size: 20px; font-weight: bold; }
@@ -26,10 +27,10 @@
         .upload-box:hover { border-color: var(--brand); background: #fffcfb; }
         
         #scan-container { display: none; margin-top: 30px; }
-        .progress-track { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        .progress-track { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin: 25px 0; }
         .progress-fill { width: 0%; height: 100%; background: var(--brand); transition: width 0.1s; }
 
-        #feedback-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:2000; align-items:center; justify-content:center; padding:15px; backdrop-filter: blur(10px); }
+        #feedback-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index: 2000; align-items:center; justify-content:center; padding:15px; backdrop-filter: blur(10px); }
         .modal-card { background:white; padding:35px; border-radius:24px; max-width:550px; width:100%; text-align:left; color: #1a1a1a; max-height: 85vh; overflow-y: auto; }
         
         .report-body h1 { font-family: 'Instrument Serif'; color: var(--brand); font-size: 28px; margin: 0 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
@@ -57,6 +58,17 @@
     <h1 id="headline">Initiate <span style="font-style: italic;">Tactical</span> Scan</h1>
     
     <div id="input-stage">
+        <div class="input-group">
+            <label>ACQUISITION SOURCE</label>
+            <select id="source-input">
+                <option value="Direct">How did you find us?</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Google">Google Search</option>
+                <option value="Referral">Referral</option>
+            </select>
+        </div>
+
         <div class="input-group">
             <label>TARGET JOB DESCRIPTION</label>
             <textarea id="jd-input" rows="4" placeholder="Paste requirements here..."></textarea>
@@ -87,6 +99,8 @@
 
     async function initiateScan(input) {
         const jd = document.getElementById('jd-input').value;
+        const source = document.getElementById('source-input').value; // GRABBING SOURCE
+        
         if (!jd || jd.length < 20) { alert("Insufficient JD data."); return; }
         
         if (input.files && input.files[0]) {
@@ -95,6 +109,7 @@
             formData.append('resume', input.files[0]);
             formData.append('name', pName);
             formData.append('email', pEmail);
+            formData.append('source', source); // SENDING SOURCE TO N8N
             formData.append('job_description', jd);
 
             try {
@@ -105,13 +120,16 @@
                 
                 if (response.ok) {
                     const rawData = await response.text();
-                    // CLEANER: Strips JSON wrappers or code artifacts
                     try {
                         const parsed = JSON.parse(rawData);
                         fullAnalysis = parsed.text || rawData;
-                    } catch(e) { fullAnalysis = rawData; }
+                    } catch(e) { 
+                        fullAnalysis = rawData; 
+                    }
                 }
-            } catch (err) { console.error("Link Error", err); }
+            } catch (err) { 
+                console.error("Link Error", err); 
+            }
         }
     }
 
@@ -123,8 +141,13 @@
             let cap = (scanCount === 0) ? 54 : 68;
             if (width >= cap) {
                 clearInterval(interval);
-                if (fullAnalysis) { scanCount++; showReport(); }
-                else { setTimeout(triggerUI, 1000); }
+                if (fullAnalysis) { 
+                    scanCount++; 
+                    showReport(); 
+                } else { 
+                    document.getElementById('status-text').innerText = "AI DECODING NARRATIVE...";
+                    setTimeout(triggerUI, 1000); 
+                }
             } else {
                 width++;
                 document.getElementById('progress-bar').style.width = width + '%';
@@ -142,9 +165,12 @@
         const scan2Raw = parts[1] ? parts[1].trim() : "";
 
         const format = (text) => {
-            return text.replace(/# (.*)/g, '<h1>$1</h1>').replace(/### (.*)/g, '<h3>$1</h3>')
-                       .replace(/\*\* (.*)\*\*/g, '<strong>$1</strong>').replace(/\* (.*)/g, '<li>$1</li>')
-                       .replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+            return text.replace(/# (.*)/g, '<h1>$1</h1>')
+                       .replace(/### (.*)/g, '<h3>$1</h3>')
+                       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                       .replace(/\* (.*)/g, '<li>$1</li>')
+                       .replace(/\\n/g, '<br>')
+                       .replace(/\n/g, '<br>');
         };
 
         modal.style.display = 'flex';
@@ -166,29 +192,21 @@
         document.getElementById('feedback-modal').style.display = 'none';
         document.getElementById('input-stage').style.display = 'block';
         document.getElementById('scan-container').style.display = 'none';
+        
         fullAnalysis = ""; 
-        // FIX: Clear the file input so the same file can be scanned again
         document.getElementById('file-input').value = "";
         document.getElementById('headline').innerHTML = "Secondary <span style='font-style: italic;'>Tactical</span> Scan";
+        document.getElementById('progress-bar').style.width = '0%';
+        document.getElementById('percentage').innerText = '0%';
     }
 
     function triggerUPI() {
-        // PROFESSIONAL DEEP LINK: Replace YOUR-UPI-ID with your real ID
-        const upiId = "yourname@okaxis"; 
+        const upiId = "alliancebusiness.abs@okaxis"; 
         const amount = "199.00";
         const name = "ResumeAI Pro";
         const note = `Pilot Uplink for ${pName}`;
-        
         const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&tn=${encodeURIComponent(note)}&cu=INR`;
-        
-        // This opens the UPI app directly
         window.location.href = upiUrl;
-
-        // Simulate success and redirect to Dashboard after a delay
-        setTimeout(() => {
-            alert("Payment intent sent. Redirecting to Pilot Dashboard...");
-            window.location.href = "dashboard.html"; 
-        }, 3000);
     }
 </script>
 </body>
