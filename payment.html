@@ -3,68 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ResumePilot — Tactical Upgrade</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <title>Checkout — ResumeAI Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --brand: #E8420A; --bg: #0a0a0a; --text: #ffffff; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; text-align: center; overflow: hidden; }
+        :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
         
-        .container { max-width: 500px; margin: 100px auto; padding: 20px; }
-        .card { border: 1px solid #333; padding: 40px; border-radius: 30px; background: #111; position: relative; }
-        
-        .shield-icon { font-size: 40px; color: var(--brand); margin-bottom: 20px; }
-        h1 { font-family: 'Instrument Serif', serif; font-size: 32px; margin-bottom: 10px; }
-        p { opacity: 0.7; font-size: 15px; margin-bottom: 30px; }
+        nav { display: flex; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); background: white; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+        .diamond-mark { width: 20px; height: 20px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
+        .logo-name { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: bold; }
 
-        /* PRICE ANIMATION */
-        .price-wrap { margin-bottom: 30px; height: 80px; display: flex; align-items: center; justify-content: center; position: relative; }
-        .old-price { font-family: 'Instrument Serif', serif; font-size: 64px; text-decoration: line-through; opacity: 0.3; transition: 0.5s; position: absolute; }
-        .new-price { font-family: 'Instrument Serif', serif; font-size: 72px; color: var(--brand); transform: scale(0); transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .checkout-container { max-width: 450px; margin: auto; padding: 40px 20px; text-align: center; }
+        .step-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--brand); font-weight: 800; margin-bottom: 10px; }
+        h1 { font-family: 'Instrument Serif', serif; font-size: 42px; line-height: 1; margin-bottom: 20px; }
         
-        .new-price.active { transform: scale(1); }
-        .old-price.hide { transform: translateY(-20px) scale(0.5); opacity: 0; }
-
-        .upi-box { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px dashed var(--brand); color: var(--brand); font-family: monospace; font-weight: bold; font-size: 16px; }
-
-        .btn-wa { background: #25D366; color: white; border: none; padding: 20px; border-radius: 12px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
-        .btn-wa:hover { transform: scale(1.02); background: #20ba5a; }
+        .price-card { background: white; border: 1px solid var(--border); border-radius: 32px; padding: 40px 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); position: relative; }
+        .price-display { font-family: 'Instrument Serif', serif; font-size: 64px; color: var(--brand); margin: 10px 0; }
         
-        .offer-tag { position: absolute; top: -15px; right: 20px; background: var(--brand); color: white; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+        .btn-pay { width: 100%; padding: 20px; background: var(--text); color: white; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .btn-whatsapp { width: 100%; padding: 18px; background: #25D366; color: white; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        #waiting-status { display: none; margin-top: 20px; font-size: 12px; color: var(--brand); font-weight: 700; letter-spacing: 1px; }
+        .loader { width: 12px; height: 12px; border: 2px solid var(--brand); border-bottom-color: transparent; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; margin-right: 8px; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="card">
-        <div class="offer-tag" id="tag">LIMITED OFFER</div>
-        <div class="shield-icon">🛡️</div>
-        <h1>Analysis: 62%</h1>
-        <p>You've reached the manual ceiling. Pay via UPI and send the screenshot to activate your 100% Reconstruct.</p>
-        
-        <div class="price-wrap">
-            <div id="old" class="old-price">₹999</div>
-            <div id="new" class="new-price">₹99</div>
+<nav>
+    <a href="index.html" class="logo-wrap"><div class="diamond-mark"></div><span class="logo-name">ResumeAI</span></a>
+</nav>
+
+<div class="checkout-container">
+    <div class="step-label">Secure Transaction</div>
+    <h1>Pro <span style="font-style: italic;">Uplink</span></h1>
+    
+    <div class="price-card">
+        <div class="price-display">₹99</div>
+        <button class="btn-pay" onclick="initiateUPI()">Step 1: Pay via UPI</button>
+        <a id="wa-btn" href="#" class="btn-whatsapp" onclick="startVerification(event)">Step 2: Verify on WhatsApp</a>
+
+        <div id="waiting-status">
+            <span class="loader"></span> VERIFYING UPLINK STATUS...
         </div>
-
-        <div class="upi-box">UPI ID: alliancebusiness.abs@okaxis</div>
-
-        <a href="https://wa.me/918309167536?text=UPLINK%20PRO%3A%20I%20have%20paid%2099%20for%20the%20reconstruct.%20Here%20is%20my%20screenshot." target="_blank" class="btn-wa">
-            SEND SCREENSHOT TO WHATSAPP
-        </a>
-        
-        <p style="font-size: 11px; margin-top: 20px; opacity: 0.4;">Uplink activation typically takes 15-60 minutes after verification.</p>
     </div>
 </div>
 
 <script>
-    window.onload = () => {
-        setTimeout(() => {
-            document.getElementById('old').classList.add('hide');
-            document.getElementById('new').classList.add('active');
-            document.getElementById('tag').innerText = "90% RECON DISCOUNT APPLIED";
-        }, 1500);
-    };
-</script>
+    const pName = localStorage.getItem('pilot_name');
+    const pEmail = localStorage.getItem('pilot_email');
+    let checkInterval;
 
+    function initiateUPI() {
+        const upiUrl = `upi://pay?pa=alliancebusiness.abs@okaxis&pn=ResumeAI&am=99.00&tn=Pro%20Uplink%20${encodeURIComponent(pName)}&cu=INR`;
+        window.location.href = upiUrl;
+    }
+
+    function startVerification(e) {
+        const waNumber = "918309167536"; // Your WhatsApp Number
+        const msg = `Payment Sent. Pilot: ${pName} (${pEmail}). Requesting 100% Reconstruct activation.`;
+        e.target.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+        
+        document.getElementById('waiting-status').style.display = 'block';
+        
+        // Start polling your n8n workflow to see if the sheet status is "Paid"
+        if (!checkInterval) {
+            checkInterval = setInterval(checkStatus, 5000);
+        }
+    }
+
+    async function checkStatus() {
+        try {
+            // This calls a new n8n webhook we'll set up to check the Google Sheet
+            const response = await fetch(`https://alliancebusiness.app.n8n.cloud/webhook/check-status?email=${pEmail}`);
+            const data = await response.json();
+            
+            if (data.status === 'Paid') {
+                clearInterval(checkInterval);
+                window.location.href = 'dashboard.html';
+            }
+        } catch (err) { console.log("Waiting for verification..."); }
+    }
+</script>
 </body>
 </html>
