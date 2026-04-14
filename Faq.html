@@ -3,67 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Methodology — ResumeAI</title>
+    <title>Methodology & FAQ — ResumeAI</title>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
-        nav { display: flex; align-items: center; padding: 25px 5%; background: white; border-bottom: 1px solid var(--border); }
-        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-        .diamond-mark { width: 24px; height: 24px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
-        .container { max-width: 800px; margin: 80px auto; padding: 0 20px; }
-        h1 { font-family: 'Instrument Serif', serif; font-size: 48px; text-align: center; margin-bottom: 50px; }
-        h2 { font-family: 'Instrument Serif', serif; font-size: 32px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .faq-item { background: white; padding: 30px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .faq-item h3 { color: var(--brand); margin-top: 0; font-size: 18px; }
-        .faq-item p { color: #555; margin-bottom: 0; line-height: 1.6; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
         
-        .step-grid { display: grid; gap: 20px; margin-bottom: 60px; }
-        .step { display: flex; gap: 20px; align-items: flex-start; background: #fff1ed; padding: 25px; border-radius: 20px; border: 1px solid rgba(232,66,10,0.1); }
-        .step-num { width: 35px; height: 35px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
-        .step-title { font-weight: 700; margin-bottom: 5px; }
+        /* MATCHING NAV BRANDING */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+        .diamond-mark { width: 20px; height: 20px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
+        .logo-name { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: bold; }
+
+        .content { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+        h1 { font-family: 'Instrument Serif', serif; font-size: 48px; margin-bottom: 10px; text-align: center; }
+        .sub-headline { text-align: center; color: #666; margin-bottom: 60px; font-size: 18px; }
+        
+        .faq-item { background: white; border: 1px solid var(--border); padding: 30px; border-radius: 24px; margin-bottom: 20px; transition: 0.3s; }
+        .faq-item:hover { border-color: var(--brand); transform: translateY(-2px); }
+        .faq-item h3 { font-family: 'Instrument Serif', serif; font-size: 24px; margin-bottom: 15px; color: var(--brand); }
+        .faq-item p { font-size: 15px; color: #444; margin: 0; }
+
+        .methodology-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+        
+        footer { padding: 60px 5%; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: #999; }
+        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: var(--brand); font-weight: 700; font-size: 14px; }
+
+        @media (max-width: 600px) { .methodology-grid { grid-template-columns: 1fr; } h1 { font-size: 36px; } }
     </style>
 </head>
 <body>
-    <nav><a href="index.html" class="logo-wrap"><div class="diamond-mark"></div><span style="font-family:'Instrument Serif'; font-weight:bold; font-size:24px;">ResumeAI</span></a></nav>
-    <div class="container">
-        <h1>Platform <span style="font-style: italic;">Methodology</span></h1>
 
-        <h2>How it Works</h2>
-        <div class="step-grid">
-            <div class="step">
-                <div class="step-num">1</div>
-                <div>
-                    <div class="step-title">Tactical Uplink</div>
-                    <p style="font-size: 14px; color: #555;">Identify your profile and establish a secure binary connection to our analysis engine.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <div>
-                    <div class="step-title">Multimodal Scan</div>
-                    <p style="font-size: 14px; color: #555;">Our AI dissects your PDF/DOCX across three vectors: Keyword Density, Narrative Weight, and Structural Integrity.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <div>
-                    <div class="step-title">Vulnerability Audit</div>
-                    <p style="font-size: 14px; color: #555;">Receive an instant Score. If you hit the 'Analysis Ceiling', we provide a roadmap for a professional reconstruction.</p>
-                </div>
-            </div>
-        </div>
+<nav>
+    <a href="index.html" class="logo-wrap">
+        <div class="diamond-mark"></div>
+        <span class="logo-name">ResumeAI</span>
+    </a>
+    <a href="index.html" class="back-link">← Return Home</a>
+</nav>
 
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item">
-            <h3>How do I reset my free scans?</h3>
-            <p>Free tactical scans are intended for initial calibration. To bridge the gap to a safe 85% match, we recommend an <strong>Uplink to Pilot (Pro)</strong>. This removes all limitations and provides the structural overhaul needed for high-growth roles.</p>
-        </div>
+<div class="content">
+    <h1>Tactical <span style="font-style: italic;">Methodology</span></h1>
+    <p class="sub-headline">How our Proprietary Intelligence Engine reconstructs your professional narrative.</p>
 
-        <div class="faq-item">
-            <h3>Is my resume data being stored?</h3>
-            <p>No. We utilize a secure binary uplink. Your resume is analyzed in real-time by the ABS Intelligence Engine and is purged immediately after the session concludes.</p>
-        </div>
+    <div class="faq-item">
+        <h3>01. What is the 85% Rule?</h3>
+        <p>Modern Applicant Tracking Systems (ATS) use keyword density and formatting parsers to filter candidates. Our research shows that resumes scoring below 85% in "Narrative Alignment" are often automatically disqualified. We identify the specific gaps preventing you from hitting this threshold.</p>
     </div>
+
+    <div class="faq-item">
+        <h3>02. Deep Narrative Analysis</h3>
+        <p>Our engine performs a binary-level scan of your document. It evaluates "Narrative Weight"—the ratio of impact-based verbs to passive descriptions—ensuring your resume reads like a tactical achievement record rather than a simple duty list.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>03. Precision JD Calibration</h3>
+        <p>Unlike generic scanners, we calibrate your resume against the specific job description provided. We analyze the semantic intent of the employer's requirements and cross-reference them with your career data to ensure a high-fidelity match.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>04. Why is the second scan "Pro"?</h3>
+        <p>The initial scan identifies vulnerabilities. The secondary <strong>Tactical Reconstruct</strong> involves deeper processing layers that offer specific, line-by-line reconstruction advice. This high-compute analysis is reserved for our Pro-tier Pilots.</p>
+    </div>
+
+    <div class="faq-item">
+        <h3>05. Data Security & Purge</h3>
+        <p>In accordance with the Alliance Business Services privacy protocol, your resume data is processed in a temporary environment. We do not maintain permanent copies of your documents on our primary servers.</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="index.html" style="background: var(--brand); color: white; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; display: inline-block;">Start Your Scan Now</a>
+    </div>
+</div>
+
+<footer>
+    © 2026 Alliance Business Services (ABS). All Rights Reserved. <br>
+    Engineering the future of talent acquisition.
+</footer>
+
 </body>
 </html>
