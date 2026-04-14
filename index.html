@@ -9,13 +9,14 @@
         :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
         body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; overflow-x: hidden; }
         
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+        /* FIX: justify-content and flex-wrap prevent the Methodology/Contact overlap glitch */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 15px; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex-shrink: 0; }
         .diamond-mark { width: 24px; height: 24px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
         .logo-name { font-family: 'Instrument Serif', serif; font-size: 24px; font-weight: bold; }
         
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; transition: 0.3s; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; transition: 0.3s; white-space: nowrap; }
         .nav-links a:hover { color: var(--brand); }
 
         .hero { padding: 120px 5%; text-align: center; max-width: 900px; margin: 0 auto; }
@@ -25,7 +26,6 @@
         .cta-btn { background: var(--brand); color: white; padding: 20px 45px; border-radius: 50px; text-decoration: none; font-weight: 700; display: inline-block; transition: 0.3s; border: none; cursor: pointer; font-size: 16px; }
         .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(232, 66, 10, 0.2); }
 
-        /* Testimonials Scrolling */
         .testimonials { padding: 100px 0; background: #fff; border-top: 1px solid var(--border); overflow: hidden; }
         .section-label { color: var(--brand); font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-align: center; display: block; margin-bottom: 30px; }
         
@@ -49,7 +49,7 @@
 
         #capture-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,248,0.98); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .capture-card { background: white; padding: 50px; border-radius: 32px; border: 1px solid var(--border); width: 90%; max-width: 420px; text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
-        .capture-card input { width: 100%; padding: 16px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 12px; background: #f9f9f9; outline: none; font-size: 16px; }
+        .capture-card input { width: 100%; padding: 16px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 12px; background: #f9f9f9; outline: none; font-size: 16px; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -60,7 +60,7 @@
         <span class="logo-name">ResumeAI</span>
     </a>
     <div class="nav-links">
-        <a href="faq.html">Methodology</a>
+        <a href="#methodology">Methodology</a>
         <a href="contact.html">Contact</a>
         <a href="#" onclick="openCapture()" style="color: var(--brand); font-weight: 700;">Analyze Now</a>
     </div>
@@ -73,15 +73,13 @@
     <button class="cta-btn" onclick="openCapture()">Get Your Tactical Score</button>
 </section>
 
-<section class="testimonials">
+<section class="testimonials" id="methodology">
     <span class="section-label">Tactical Success</span>
     <div class="test-container">
         <div class="test-card"><p>"I thought my resume was perfect. ResumeAI showed me I was failing the 'Narrative Weight' check. One rebuild later, I'm at Google."</p><div class="user-info"><strong>Rohan K.</strong><span>Cloud Engineer</span></div></div>
         <div class="test-card"><p>"The scan is brutal but honest. Reaching the 85% threshold changed my response rate overnight."</p><div class="user-info"><strong>Priya Sharma</strong><span>UX Lead</span></div></div>
         <div class="test-card"><p>"The 'Analysis Ceiling' concept is the most accurate description of the modern job market."</p><div class="user-info"><strong>Arjun V.</strong><span>Finance Director</span></div></div>
-        <div class="test-card"><p>"I thought my resume was perfect. ResumeAI showed me I was failing the 'Narrative Weight' check. One rebuild later, I'm at Google."</p><div class="user-info"><strong>Rohan K.</strong><span>Cloud Engineer</span></div></div>
         <div class="test-card"><p>"The scan is brutal but honest. Reaching the 85% threshold changed my response rate overnight."</p><div class="user-info"><strong>Priya Sharma</strong><span>UX Lead</span></div></div>
-        <div class="test-card"><p>"The 'Analysis Ceiling' concept is the most accurate description of the modern job market."</p><div class="user-info"><strong>Arjun V.</strong><span>Finance Director</span></div></div>
     </div>
 </section>
 
@@ -92,18 +90,16 @@
             <p style="font-size: 12px; color: #888; margin-top: 20px;">© 2026 ABS (Alliance Business Services).<br>Engineering the future of talent acquisition.</p>
         </div>
         <div class="footer-col">
-            <label style="font-weight: 700; font-size: 12px; letter-spacing: 1px;">PLATFORM</label>
+            <label style="font-weight: 700; font-size: 12px; letter-spacing: 1px;">LEGAL</label>
             <ul>
-                <li><a href="#" onclick="openCapture()">Tactical Scanner</a></li>
-                <li><a href="faq.html">How it Works</a></li>
-                <li><a href="contact.html">Pro Uplink</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="tearms.html">Terms of Use</a></li>
             </ul>
         </div>
         <div class="footer-col">
             <label style="font-weight: 700; font-size: 12px; letter-spacing: 1px;">DIRECT UPLINK</label>
             <ul>
-                <li><a href="contact.html">Technical Support</a></li>
-                <li><a href="contact.html">Enterprise AI Consulting</a></li>
+                <li><a href="contact.html">Pro Uplink</a></li>
                 <li><a href="mailto:alliancebusiness.abs@gmail.com">Direct Email</a></li>
             </ul>
         </div>
@@ -128,6 +124,7 @@
         const name = document.getElementById('pName').value;
         const email = document.getElementById('pEmail').value;
         if(!name || !email) { alert("Credentials required to establish link."); return; }
+        
         localStorage.setItem('pilot_name', name);
         localStorage.setItem('pilot_email', email);
         window.location.href = "app.html";
