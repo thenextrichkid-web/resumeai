@@ -1,39 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms of Use — ResumeAI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{--brand:#E8420A;--brand-dark:#C23508;--text:#1a1a1a;--text-secondary:#6b6b6b;--border:rgba(0,0,0,0.1);--bg:#fafaf8}
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);margin:0;-webkit-font-smoothing:antialiased}
-    nav{border-bottom:0.5px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;max-width:680px;margin:0 auto}
-    .page{max-width:680px;margin:0 auto;padding:2.5rem 1.25rem 4rem}
-    h1{font-family:'Instrument Serif',serif;font-size:32px;font-weight:400;margin-bottom:1.5rem}
-    h2{font-size:16px;font-weight:500;margin:2rem 0 10px}
-    p, li{font-size:14px;color:var(--text-secondary);line-height:1.75;margin-bottom:12px}
-    footer{border-top:0.5px solid var(--border);padding:1.5rem 1.25rem;max-width:680px;margin:0 auto;font-size:12px;color:var(--text-secondary)}
-    a{color:var(--brand);text-decoration:none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use — ResumeAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+        
+        /* MATCHING NAV BRANDING */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+        .diamond-mark { width: 20px; height: 20px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
+        .logo-name { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: bold; }
+
+        .content { max-width: 700px; margin: 60px auto; padding: 0 20px; }
+        h1 { font-family: 'Instrument Serif', serif; font-size: 48px; margin-bottom: 10px; }
+        .last-updated { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 40px; }
+        
+        h2 { font-family: 'Instrument Serif', serif; font-size: 28px; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        p { margin-bottom: 20px; color: #444; }
+        
+        .legal-notice { background: #fff; border: 1px solid var(--border); padding: 25px; border-radius: 20px; font-size: 14px; color: #666; font-style: italic; margin: 30px 0; border-left: 4px solid var(--brand); }
+        
+        footer { padding: 60px 5%; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: #999; }
+        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: var(--brand); font-weight: 700; font-size: 14px; }
+    </style>
 </head>
 <body>
-  <nav><a href="/" style="text-decoration:none;font-weight:700;color:var(--brand)">ResumeAI</a><a href="/" style="font-size:13px;color:var(--text-secondary);text-decoration:none">← Back</a></nav>
-  <div class="page">
+
+<nav>
+    <a href="index.html" class="logo-wrap">
+        <div class="diamond-mark"></div>
+        <span class="logo-name">ResumeAI</span>
+    </a>
+    <a href="index.html" class="back-link">← Return Home</a>
+</nav>
+
+<div class="content">
     <h1>Terms of Use</h1>
-    <p>Last updated: April 2026</p>
-    <h2>1. Acceptance of Terms</h2>
-    <p>By accessing ResumeAI, a product of Alliance Business Services (ABS), you agree to be bound by these Terms of Use and all applicable laws and regulations.</p>
-    <h2>2. Use License</h2>
-    <p>You are granted permission to use ResumeAI for personal, non-commercial resume analysis. You may not attempt to decompile or reverse engineer any software contained on the website.</p>
-    <h2>3. Accuracy of Analysis</h2>
-    <p>ResumeAI uses artificial intelligence to provide suggestions. We do not guarantee that following these suggestions will result in a job offer or an interview. The tool is for informational purposes only.</p>
-    <h2>4. Payments and Refunds</h2>
-    <p>Payments for ResumePilot Pro (₹99) are processed manually via UPI. Once Pro access is activated, no refunds will be issued due to the digital nature of the service.</p>
-    <h2>5. Limitation of Liability</h2>
-    <p>Alliance Business Services shall not be held liable for any damages arising out of the use or inability to use the services provided on this website.</p>
-  </div>
-  <footer>&copy; 2026 Alliance Business Services.</footer>
+    <div class="last-updated">Updated April 15, 2026</div>
+
+    <p>By accessing and utilizing the ResumeAI platform, a proprietary service of <strong>Alliance Business Services (ABS)</strong>, you agree to the following legally binding terms and conditions.</p>
+
+    <h2>1. Nature of Service</h2>
+    <p>ResumeAI provides automated career data analysis powered by artificial intelligence. The "Tactical Score" and associated analysis are generated using probabilistic data models and are intended for professional development and informational purposes only.</p>
+
+    <h2>2. Professional Disclaimer</h2>
+    <div class="legal-notice">
+        <strong>Notice:</strong> Alliance Business Services does not guarantee specific employment outcomes, interview invitations, or successful passage through third-party Applicant Tracking Systems (ATS). Users are advised to exercise professional judgment when implementing AI-generated suggestions.
+    </div>
+
+    <h2>3. Intellectual Property Rights</h2>
+    <p>The proprietary analysis algorithms, the ResumeAI brand architecture, and the "8-Stream Income" methodology are the exclusive intellectual property of Alliance Business Services. Unauthorized reproduction, reverse-engineering, or automated scraping of the platform is strictly prohibited.</p>
+
+    <h2>4. Financial Terms & Refund Policy</h2>
+    <p>Access to the "Tactical Reconstruct (PRO)" tier requires a one-time service fee (₹99). Payments are processed via secure manual UPI transfer. Due to the immediate delivery of digital intelligence and proprietary analysis, all service fees are non-refundable once the professional audit has been initiated.</p>
+
+    <h2>5. Data Submission & Compliance</h2>
+    <p>Users are responsible for ensuring they have the legal right to upload the documents provided. Alliance Business Services reserves the right to terminate access for users found to be uploading malicious code, fraudulent information, or violating data privacy standards.</p>
+
+    <h2>6. Limitation of Liability</h2>
+    <p>Alliance Business Services shall not be held liable for any career-related decisions, loss of opportunity, or indirect damages resulting from the use or inability to use the ResumeAI platform.</p>
+
+    <h2>7. Jurisdictional Law</h2>
+    <p>These terms are governed by the laws of India. Any legal proceedings related to these terms shall be conducted within the appropriate jurisdictional courts of our primary business location.</p>
+
+    <a href="index.html" class="back-link">← Back to Tactical Center</a>
+</div>
+
+<footer>
+    © 2026 Alliance Business Services (ABS). All Rights Reserved. <br>
+    Professional Talent Acquisition Intelligence.
+</footer>
+
 </body>
 </html>
