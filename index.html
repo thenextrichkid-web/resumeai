@@ -1,117 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResumeAI — Is your resume ATS-ready?</title>
-  <meta name="description" content="75% of resumes are rejected by ATS before a human reads them. Check your ATS score free in 30 seconds.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{--brand:#E8420A;--brand-dark:#C23508;--brand-light:#FEF0EB;--text:#1a1a1a;--text-secondary:#6b6b6b;--text-tertiary:#9a9a9a;--border:rgba(0,0,0,0.1);--border-strong:rgba(0,0,0,0.2);--bg:#fafaf8;--bg-card:#ffffff;--bg-surface:#f4f3f0;--green:#1D9E75;--green-light:#E1F5EE;--red:#A32D2D;--red-light:#FCEBEB}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-    .container{max-width:680px;margin:0 auto;padding:0 1.25rem}
-    nav{border-bottom:0.5px solid var(--border);background:rgba(250,250,248,0.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;max-width:680px;margin:0 auto}
-    .nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
-    .logo-mark{width:28px;height:28px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:16px}
-    .logo-name{font-size:15px;font-weight:500;color:var(--text)}
-    .nav-cta{background:var(--brand);color:white;border:none;padding:8px 18px;border-radius:99px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity .15s}
-    .nav-cta:hover{opacity:.87}
-    .hero{padding:3.5rem 0 2.5rem;text-align:center}
-    .hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--brand-light);color:var(--brand-dark);font-size:12px;font-weight:500;padding:5px 13px;border-radius:99px;margin-bottom:1.25rem}
-    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--brand)}
-    h1{font-family:'Instrument Serif',serif;font-size:clamp(34px,7vw,50px);font-weight:400;line-height:1.18;margin-bottom:1.1rem}
-    h1 em{font-style:italic;color:var(--brand)}
-    .hero-sub{font-size:15px;color:var(--text-secondary);line-height:1.7;max-width:460px;margin:0 auto 1.75rem}
-    .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:1.1rem}
-    .btn-primary{background:var(--brand);color:white;border:none;padding:13px 28px;border-radius:99px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity .15s}
-    .btn-primary:hover{opacity:.87}
-    .btn-ghost{background:transparent;color:var(--text);border:0.5px solid var(--border-strong);padding:13px 28px;border-radius:99px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;text-decoration:none;display:inline-block;transition:background .15s}
-    .btn-ghost:hover{background:var(--bg-surface)}
-    .hero-note{font-size:12px;color:var(--text-tertiary)}
-    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:3rem}
-    .stat-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:12px;padding:1.1rem 1rem;text-align:center}
-    .stat-num{font-family:'Instrument Serif',serif;font-size:28px;color:var(--text);margin-bottom:4px}
-    .stat-lbl{font-size:12px;color:var(--text-secondary);line-height:1.4}
-    .section-head{text-align:center;margin-bottom:1.75rem}
-    .section-head h2{font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;color:var(--text);margin-bottom:6px}
-    .section-head p{font-size:14px;color:var(--text-secondary)}
-    .steps{display:flex;flex-direction:column;margin-bottom:3rem}
-    .step{display:flex;gap:16px;align-items:flex-start;padding:1rem 0;border-bottom:0.5px solid var(--border)}
-    .step:last-child{border-bottom:none}
-    .step-num{width:34px;height:34px;border-radius:50%;border:0.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0}
-    .step-title{font-size:15px;font-weight:500;margin-bottom:4px}
-    .step-desc{font-size:13px;color:var(--text-secondary);line-height:1.6}
-    .cta-section{text-align:center;padding:2.75rem 1.5rem;background:var(--bg-card);border:0.5px solid var(--border);border-radius:16px;margin-bottom:2.5rem}
-    .cta-section h2{font-family:'Instrument Serif',serif;font-size:26px;font-weight:400;margin-bottom:8px}
-    .cta-section p{font-size:14px;color:var(--text-secondary);margin-bottom:1.5rem}
-    .cta-note{font-size:12px;color:var(--text-tertiary);margin-top:11px}
-    footer{border-top:0.5px solid var(--border);padding:1.5rem 0 2rem}
-    .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;max-width:680px;margin:0 auto;padding:0 1.25rem}
-    .footer-copy{width:100%;font-size:11px;color:var(--text-tertiary);margin-top:4px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeAI — Professional ATS Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; overflow-x: hidden; }
+        
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+        .diamond-mark { width: 24px; height: 24px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
+        .logo-name { font-family: 'Instrument Serif', serif; font-size: 24px; font-weight: bold; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--brand); }
+
+        .hero { padding: 120px 5%; text-align: center; max-width: 900px; margin: 0 auto; }
+        .hero h1 { font-family: 'Instrument Serif', serif; font-size: 68px; line-height: 1; margin-bottom: 25px; letter-spacing: -1px; }
+        .hero p { font-size: 18px; color: #555; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        
+        .cta-btn { background: var(--brand); color: white; padding: 20px 45px; border-radius: 50px; text-decoration: none; font-weight: 700; display: inline-block; transition: 0.3s; border: none; cursor: pointer; font-size: 16px; }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(232, 66, 10, 0.2); }
+
+        /* Testimonials Scrolling */
+        .testimonials { padding: 100px 0; background: #fff; border-top: 1px solid var(--border); overflow: hidden; }
+        .section-label { color: var(--brand); font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-align: center; display: block; margin-bottom: 30px; }
+        
+        .test-container { display: flex; width: 200%; animation: scroll 40s linear infinite; }
+        .test-card { width: 350px; background: var(--bg); padding: 40px; border-radius: 28px; border: 1px solid var(--border); margin: 0 15px; flex-shrink: 0; white-space: normal; }
+        .test-card p { font-style: italic; color: #333; margin-bottom: 20px; font-size: 16px; }
+        .user-info strong { font-size: 14px; display: block; }
+        .user-info span { font-size: 12px; color: #888; }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .testimonials:hover .test-container { animation-play-state: paused; }
+
+        footer { padding: 80px 5%; border-top: 1px solid var(--border); background: white; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px; max-width: 1200px; margin: 0 auto; }
+        .footer-col ul { list-style: none; padding: 0; margin-top: 25px; }
+        .footer-col li { margin-bottom: 15px; }
+        .footer-col a { text-decoration: none; color: #666; font-size: 14px; }
+
+        #capture-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,248,0.98); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .capture-card { background: white; padding: 50px; border-radius: 32px; border: 1px solid var(--border); width: 90%; max-width: 420px; text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
+        .capture-card input { width: 100%; padding: 16px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 12px; background: #f9f9f9; outline: none; font-size: 16px; }
+    </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-inner">
-      <a href="/" class="nav-logo">
-        <div class="logo-mark">R</div>
+
+<nav>
+    <a href="index.html" class="logo-wrap">
+        <div class="diamond-mark"></div>
         <span class="logo-name">ResumeAI</span>
-      </a>
-      <a href="/app.html" class="nav-cta">Try free</a>
+    </a>
+    <div class="nav-links">
+        <a href="faq.html">Methodology</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" onclick="openCapture()" style="color: var(--brand); font-weight: 700;">Analyze Now</a>
     </div>
-  </nav>
+</nav>
 
-  <section class="hero">
-    <div class="container">
-      <div class="hero-badge"><div class="badge-dot"></div>AI-powered resume analysis</div>
-      <h1>Is your resume<br><em>passing the AI screen?</em></h1>
-      <p class="hero-sub">75% of resumes are rejected by ATS software before a human ever reads them. Find out your score in 30 seconds — and fix it.</p>
-      <div class="hero-btns">
-        <a href="/app.html" class="btn-primary">Check my resume score — free</a>
-        <a href="#how" class="btn-ghost">How it works</a>
-      </div>
-      <!-- UPDATED: Removed 'No credit card' and 'every month' -->
-      <div class="hero-note">No account needed. First 2 scans are free.</div>
+<section class="hero">
+    <span class="section-label">A Product of Alliance Business Services</span>
+    <h1>Don't leave your career to an algorithm. Master the <span style="font-style: italic;">85% Rule.</span></h1>
+    <p>Modern ATS software rejects 75% of qualified talent before a human ever sees the document. Our tactical scan identifies your vulnerabilities in 60 seconds.</p>
+    <button class="cta-btn" onclick="openCapture()">Get Your Tactical Score</button>
+</section>
+
+<section class="testimonials">
+    <span class="section-label">Tactical Success</span>
+    <div class="test-container">
+        <div class="test-card"><p>"I thought my resume was perfect. ResumeAI showed me I was failing the 'Narrative Weight' check. One rebuild later, I'm at Google."</p><div class="user-info"><strong>Rohan K.</strong><span>Cloud Engineer</span></div></div>
+        <div class="test-card"><p>"The scan is brutal but honest. Reaching the 85% threshold changed my response rate overnight."</p><div class="user-info"><strong>Priya Sharma</strong><span>UX Lead</span></div></div>
+        <div class="test-card"><p>"The 'Analysis Ceiling' concept is the most accurate description of the modern job market."</p><div class="user-info"><strong>Arjun V.</strong><span>Finance Director</span></div></div>
+        <div class="test-card"><p>"I thought my resume was perfect. ResumeAI showed me I was failing the 'Narrative Weight' check. One rebuild later, I'm at Google."</p><div class="user-info"><strong>Rohan K.</strong><span>Cloud Engineer</span></div></div>
+        <div class="test-card"><p>"The scan is brutal but honest. Reaching the 85% threshold changed my response rate overnight."</p><div class="user-info"><strong>Priya Sharma</strong><span>UX Lead</span></div></div>
+        <div class="test-card"><p>"The 'Analysis Ceiling' concept is the most accurate description of the modern job market."</p><div class="user-info"><strong>Arjun V.</strong><span>Finance Director</span></div></div>
     </div>
-  </section>
+</section>
 
-  <div class="container">
-    <div class="stats">
-      <div class="stat-card"><div class="stat-num">75%</div><div class="stat-lbl">Resumes rejected before human review</div></div>
-      <div class="stat-card"><div class="stat-num">30s</div><div class="stat-lbl">To get your full ATS score</div></div>
-      <!-- UPDATED: Mentioned Free 2 scans -->
-      <div class="stat-card"><div class="stat-num">Free</div><div class="stat-lbl">First 2 scans included</div></div>
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo-wrap"><div class="diamond-mark"></div><span class="logo-name">ResumeAI</span></div>
+            <p style="font-size: 12px; color: #888; margin-top: 20px;">© 2026 ABS (Alliance Business Services).<br>Engineering the future of talent acquisition.</p>
+        </div>
+        <div class="footer-col">
+            <label style="font-weight: 700; font-size: 12px; letter-spacing: 1px;">PLATFORM</label>
+            <ul>
+                <li><a href="#" onclick="openCapture()">Tactical Scanner</a></li>
+                <li><a href="faq.html">How it Works</a></li>
+                <li><a href="contact.html">Pro Uplink</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <label style="font-weight: 700; font-size: 12px; letter-spacing: 1px;">DIRECT UPLINK</label>
+            <ul>
+                <li><a href="contact.html">Technical Support</a></li>
+                <li><a href="contact.html">Enterprise AI Consulting</a></li>
+                <li><a href="mailto:alliancebusiness.abs@gmail.com">Direct Email</a></li>
+            </ul>
+        </div>
     </div>
+</footer>
 
-    <section id="how">
-      <div class="section-head"><h2>How it works</h2><p>Three steps. Thirty seconds.</p></div>
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><div><div class="step-title">Upload your resume</div><div class="step-desc">Upload a PDF, DOCX, DOC, or RTF file — or paste your text directly. No account needed.</div></div></div>
-        <div class="step"><div class="step-num">2</div><div><div class="step-title">Get your ATS score instantly</div><div class="step-desc">AI analyses your resume across format, keywords, experience, and impact. Full breakdown in seconds.</div></div></div>
-        <div class="step"><div class="step-num">3</div><div><div class="step-title">Fix it and re-score</div><div class="step-desc">Apply the suggestions, re-upload your improved resume, and watch your score climb.</div></div></div>
-      </div>
-    </section>
-
-    <div class="cta-section">
-      <h2>Your next job starts with your resume</h2>
-      <p>Check your ATS score right now — free, instant, no login needed.</p>
-      <a href="/app.html" class="btn-primary">Check my score — it is free</a>
-      <!-- UPDATED: Removed 'every month' -->
-      <div class="cta-note">2 free scans included. Pro Access at Just ₹99/month for unlimited.</div>
+<div id="capture-overlay">
+    <div class="capture-card">
+        <div class="diamond-mark" style="margin: 0 auto 20px;"></div>
+        <h2 style="font-family:'Instrument Serif'; font-size:32px; margin-bottom:10px;">Identify Yourself</h2>
+        <input type="text" id="pName" placeholder="Full Name">
+        <input type="email" id="pEmail" placeholder="Email Address">
+        <button class="cta-btn" style="width:100%" onclick="initiateJump()">Unlock Scanner</button>
+        <p onclick="closeCapture()" style="margin-top:25px; cursor:pointer; font-size:11px; opacity:0.5; letter-spacing: 1px;">[ CANCEL ]</p>
     </div>
-  </div>
+</div>
 
-  <footer>
-    <div class="footer-inner">
-       <a href="/" class="nav-logo">
-        <div class="logo-mark" style="width:22px;height:22px;border-radius:5px;font-size:12px">R</div>
-        <span class="logo-name" style="font-size:13px">ResumeAI</span>
-      </a>
-      <div class="footer-copy">A product by Alliance Business Services (ABS) — AI Agency &amp; Consulting.</div>
-    </div>
-  </footer>
+<script>
+    function openCapture() { document.getElementById('capture-overlay').style.display = 'flex'; }
+    function closeCapture() { document.getElementById('capture-overlay').style.display = 'none'; }
+    function initiateJump() {
+        const name = document.getElementById('pName').value;
+        const email = document.getElementById('pEmail').value;
+        if(!name || !email) { alert("Credentials required to establish link."); return; }
+        localStorage.setItem('pilot_name', name);
+        localStorage.setItem('pilot_email', email);
+        window.location.href = "app.html";
+    }
+</script>
 </body>
 </html>

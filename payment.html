@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumePilot — Tactical Upgrade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #E8420A; --bg: #0a0a0a; --text: #ffffff; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; text-align: center; overflow: hidden; }
+        
+        .container { max-width: 500px; margin: 100px auto; padding: 20px; }
+        .card { border: 1px solid #333; padding: 40px; border-radius: 30px; background: #111; position: relative; }
+        
+        .shield-icon { font-size: 40px; color: var(--brand); margin-bottom: 20px; }
+        h1 { font-family: 'Instrument Serif', serif; font-size: 32px; margin-bottom: 10px; }
+        p { opacity: 0.7; font-size: 15px; margin-bottom: 30px; }
+
+        /* PRICE ANIMATION */
+        .price-wrap { margin-bottom: 30px; height: 80px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .old-price { font-family: 'Instrument Serif', serif; font-size: 64px; text-decoration: line-through; opacity: 0.3; transition: 0.5s; position: absolute; }
+        .new-price { font-family: 'Instrument Serif', serif; font-size: 72px; color: var(--brand); transform: scale(0); transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .new-price.active { transform: scale(1); }
+        .old-price.hide { transform: translateY(-20px) scale(0.5); opacity: 0; }
+
+        .upi-box { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px dashed var(--brand); color: var(--brand); font-family: monospace; font-weight: bold; font-size: 16px; }
+
+        .btn-wa { background: #25D366; color: white; border: none; padding: 20px; border-radius: 12px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .btn-wa:hover { transform: scale(1.02); background: #20ba5a; }
+        
+        .offer-tag { position: absolute; top: -15px; right: 20px; background: var(--brand); color: white; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="offer-tag" id="tag">LIMITED OFFER</div>
+        <div class="shield-icon">🛡️</div>
+        <h1>Analysis: 62%</h1>
+        <p>You've reached the manual ceiling. Pay via UPI and send the screenshot to activate your 100% Reconstruct.</p>
+        
+        <div class="price-wrap">
+            <div id="old" class="old-price">₹999</div>
+            <div id="new" class="new-price">₹99</div>
+        </div>
+
+        <div class="upi-box">UPI ID: alliancebusiness.abs@okaxis</div>
+
+        <a href="https://wa.me/918309167536?text=UPLINK%20PRO%3A%20I%20have%20paid%2099%20for%20the%20reconstruct.%20Here%20is%20my%20screenshot." target="_blank" class="btn-wa">
+            SEND SCREENSHOT TO WHATSAPP
+        </a>
+        
+        <p style="font-size: 11px; margin-top: 20px; opacity: 0.4;">Uplink activation typically takes 15-60 minutes after verification.</p>
+    </div>
+</div>
+
+<script>
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('old').classList.add('hide');
+            document.getElementById('new').classList.add('active');
+            document.getElementById('tag').innerText = "90% RECON DISCOUNT APPLIED";
+        }, 1500);
+    };
+</script>
+
+</body>
+</html>

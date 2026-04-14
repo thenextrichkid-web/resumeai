@@ -1,152 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResumeAI™ | Powered by ABS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --brand: #E8420A; --core: #00f2ff; --bg: #fafaf8; }
-    body { font-family: 'Rajdhani', sans-serif; background: var(--bg); margin: 0; transition: background 1s, color 1s; }
-    
-    /* Transition State: Space Mode */
-    body.space-mode { background: #050a14; color: white; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeAI — Tactical Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: background 0.8s, color 0.8s; }
+        
+        .nav { display: flex; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); background: white; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+        .diamond-mark { width: 24px; height: 24px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
+        .logo-name { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: bold; }
 
-    /* Logo Header */
-    .nav { display: flex; justify-content: center; padding: 30px; }
-    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-mark { width: 35px; height: 35px; background: var(--brand); clip-path: polygon(50% 0%, 0% 100%, 50% 80%, 100% 100%); box-shadow: 0 0 15px var(--brand); }
-    .logo-name { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; color: #1a1a1a; transition: 0.5s; }
-    body.space-mode .logo-name { color: white; }
+        .container { max-width: 650px; margin: 40px auto; padding: 20px; text-align: center; }
+        .pilot-welcome { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--brand); margin-bottom: 10px; font-weight: 700; }
+        h1 { font-family: 'Instrument Serif', serif; font-size: 42px; margin-bottom: 30px; }
 
-    /* Main Card */
-    .card { max-width: 500px; margin: 40px auto; background: white; padding: 40px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center; border: 1px solid rgba(0,0,0,0.05); transition: 0.5s; }
-    body.space-mode .card { background: rgba(0, 5, 12, 0.9); border-color: var(--core); box-shadow: 0 0 50px rgba(0, 242, 255, 0.1); color: white; }
+        .input-group { text-align: left; margin-bottom: 20px; }
+        label { font-size: 11px; font-weight: 700; color: var(--brand); margin-bottom: 8px; display: block; letter-spacing: 1px; }
+        textarea, input, select { width: 100%; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); font-family: inherit; font-size: 14px; outline: none; box-sizing: border-box; background: white; }
+        
+        .upload-box { border: 2px dashed var(--border); padding: 50px 20px; border-radius: 24px; background: white; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        .upload-box:hover { border-color: var(--brand); background: #fffcfb; transform: translateY(-2px); }
+        
+        #scan-container { display: none; margin-top: 40px; }
+        .progress-track { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin: 25px 0; }
+        .progress-fill { width: 0%; height: 100%; background: var(--brand); transition: width 0.1s; }
 
-    .btn { background: var(--brand); color: white; border: none; padding: 18px 30px; border-radius: 12px; font-family: 'Orbitron'; cursor: pointer; width: 100%; font-size: 14px; letter-spacing: 1px; }
-    .btn-vip { background: var(--core); color: #000; display: none; margin-top: 20px; }
+        #feedback-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:2000; align-items:center; justify-content:center; padding:20px; backdrop-filter: blur(12px); }
+        .modal-card { background:white; padding:45px; border-radius:32px; max-width:580px; width:100%; text-align:left; color: #1a1a1a; max-height: 85vh; overflow-y: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
+        
+        /* Report Typography */
+        .report-body h1 { font-family: 'Instrument Serif'; color: var(--brand); font-size: 36px; margin: 0 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .report-body h3 { font-family: 'DM Sans'; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: #666; margin-top: 25px; font-weight: 700; }
+        .report-body p { line-height: 1.8; font-size: 16px; margin: 15px 0; color: #333; }
+        .report-body ul { padding-left: 20px; margin: 15px 0; }
+        .report-body li { margin-bottom: 12px; line-height: 1.6; font-size: 15px; }
+        .report-body strong { color: var(--brand); font-weight: 600; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
 
-    /* Flash Overlay */
-    #flash { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    .blink { animation: blink 0.5s infinite; color: var(--brand); font-family: 'Orbitron'; font-size: 20px; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-    .score-circle { width: 100px; height: 100px; border-radius: 50%; border: 5px solid var(--brand); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 32px; margin: 20px auto; }
-    body.space-mode .score-circle { border-color: var(--core); box-shadow: 0 0 20px var(--core); }
-  </style>
+        body.dark-mode { background: #050505; color: white; }
+        body.dark-mode .nav { background: #050505; border-bottom: 1px solid #222; }
+        body.dark-mode .modal-card { background: #111; color: #efefef; border: 1px solid #333; }
+        body.dark-mode .report-body h3 { color: #999; }
+        body.dark-mode .report-body p { color: #ddd; }
+    </style>
 </head>
 <body>
 
-  <div id="flash">
-    <div class="blink">! ATMOSPHERIC CEILING REACHED</div>
-    <p style="color: white; font-family: Rajdhani; margin-top: 20px;">Standard scan cannot bypass sub-space filters.</p>
-    <div style="width: 200px; height: 2px; background: #333; margin-top: 20px;"><div id="bar" style="width: 0%; height: 100%; background: var(--core);"></div></div>
-  </div>
+<div class="nav">
+    <a href="/" class="logo-wrap">
+        <div class="diamond-mark"></div>
+        <span class="logo-name">ResumeAI</span>
+    </a>
+</div>
 
-  <nav class="nav">
-    <div class="logo-wrap">
-      <div class="logo-mark"></div>
-      <span class="logo-name" id="logo-text">ResumeAI™</span>
+<div class="container">
+    <div class="pilot-welcome" id="pilot-display">PILOT AUTHORIZATION REQUIRED</div>
+    <h1 id="headline">Initiate <span style="font-style: italic;">Tactical</span> Scan</h1>
+    
+    <div id="input-stage">
+        <div class="input-group">
+            <label>ACQUISITION SOURCE</label>
+            <select id="source-input">
+                <option value="Direct">How did you find us?</option>
+                <option value="Google Search">Google Search</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Instagram">Instagram</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Referral">Referral / Word of Mouth</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>TARGET JOB DESCRIPTION</label>
+            <textarea id="jd-input" placeholder="Paste the job requirements here for AI calibration..."></textarea>
+        </div>
+
+        <div class="upload-box" onclick="document.getElementById('file-input').click()">
+            <div style="font-size: 32px; margin-bottom: 15px;">📂</div>
+            <p style="font-weight:600; font-size: 16px;">Drop Resume here or Click to Upload</p>
+            <p style="font-size: 12px; color: #888;">Supports PDF & DOCX (Direct Binary Analysis)</p>
+            <input type="file" id="file-input" style="display:none" onchange="initiateScan(this)">
+        </div>
     </div>
-  </nav>
 
-  <div class="card" id="main-card">
-    <div id="upload-stage">
-      <p style="font-weight: 500;">Initial Vocation Calibration Required</p>
-      <input type="file" id="fileInput" hidden>
-      <button class="btn" onclick="document.getElementById('fileInput').click()">SELECT DATA VECTORS</button>
+    <div id="scan-container">
+        <p id="status-text" style="font-family: monospace; color: var(--brand); letter-spacing: 2px; font-weight: bold;">UPLINKING DATA STREAM...</p>
+        <div class="progress-track"><div class="progress-fill" id="progress-bar"></div></div>
+        <p id="percentage" style="font-family: 'Instrument Serif'; font-size: 36px;">0%</p>
     </div>
+</div>
 
-    <div id="result-stage" style="display:none;">
-      <div class="score-circle" id="score">0</div>
-      <p id="msg">Score Below Cutoff. Injected keywords required.</p>
-      <button class="btn" id="retry-btn" onclick="resetScan()">TRY ONE MORE FREE SCAN</button>
-      <button class="btn btn-vip" id="vip-btn" onclick="redirectToPilot()">INITIALIZE PILOT PROTOCOL (₹99)</button>
-    </div>
-  </div>
-
+<div id="feedback-modal"><div class="modal-card" id="modal-content"></div></div>
 
 <script>
-<script>
+    // Pulling Pilot Info
+    const pName = localStorage.getItem('pilot_name') || 'Guest';
+    const pEmail = localStorage.getItem('pilot_email') || 'Unknown';
+    document.getElementById('pilot-display').innerText = `PILOT: ${pName.toUpperCase()}`;
+
     let scanCount = 0;
-    const fileIn = document.getElementById('fileInput');
+    let fullAnalysis = "";
 
-    // MOBILE OPTIMIZATION: Clear the input whenever it's tapped
-    // This forces the "change" event to fire even if the user picks the same file
-    fileIn.addEventListener('click', function() {
-        this.value = null;
-    });
-
-    fileIn.onchange = async (e) => {
-        const file = e.target.files[0];
-        if(!file) return;
+    async function initiateScan(input) {
+        const jd = document.getElementById('jd-input').value;
+        const source = document.getElementById('source-input').value;
         
-        // Visual feedback for mobile users
-        document.getElementById('status').innerText = "CALIBRATING VECTORS...";
+        if (!jd || jd.length < 20) { alert("Insufficient JD data for calibration."); return; }
         
-        // Small delay to simulate "Thinking" (Good for UX)
-        await new Promise(r => setTimeout(r, 1200));
-
-        if(scanCount === 0) {
-            // PHASE 1: Earth Results
-            scanCount = 1;
-            document.getElementById('upload-stage').style.display = 'none';
-            document.getElementById('result-stage').style.display = 'block';
-            document.getElementById('score').innerText = "42";
-            document.getElementById('status').innerText = "SCAN_COMPLETE: BELOW_CUTOFF";
-        } else {
-            // PHASE 2: Trigger the Space Transition
-            triggerFlash();
+        if (scanCount >= 1 && fullAnalysis) {
+            triggerUI();
+            return;
         }
-    };
 
-    function triggerFlash() {
-        const flash = document.getElementById('flash');
-        const bar = document.getElementById('bar');
-        
-        // Force the flash to show on top of everything
-        flash.style.display = 'flex';
-        
-        let p = 0;
-        const int = setInterval(() => {
-            p += 5;
-            bar.style.width = p + '%';
-            if(p >= 100) {
-                clearInterval(int);
-                setTimeout(() => {
-                    flash.style.display = 'none';
-                    enableSpaceMode();
-                }, 400);
+        if (input.files && input.files[0]) {
+            triggerUI();
+            
+            const formData = new FormData();
+            formData.append('resume', input.files[0]);
+            formData.append('name', pName);
+            formData.append('email', pEmail);
+            formData.append('source', source);
+            formData.append('job_description', jd);
+
+            try {
+                // REPLACE WITH YOUR LIVE n8n WEBHOOK URL
+                const response = await fetch('http://localhost:5678/webhook-test/resume-scan', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    fullAnalysis = data.text; 
+                }
+            } catch (err) { console.error("Critical Uplink Failure:", err); }
+        }
+    }
+
+    function triggerUI() {
+        document.getElementById('input-stage').style.display = 'none';
+        document.getElementById('scan-container').style.display = 'block';
+        let width = 0;
+        const interval = setInterval(() => {
+            let cap = (scanCount === 0) ? 54 : 62;
+            if (width >= cap) {
+                clearInterval(interval);
+                if (fullAnalysis) { scanCount++; showReport(); }
+                else { 
+                    document.getElementById('status-text').innerText = "AI DECODING NARRATIVE...";
+                    setTimeout(triggerUI, 800); 
+                }
+            } else {
+                width++;
+                document.getElementById('progress-bar').style.width = width + '%';
+                document.getElementById('percentage').innerText = width + '%';
             }
-        }, 80); // Slightly faster for better mobile feel
+        }, 50);
     }
 
-    function enableSpaceMode() {
-        document.body.classList.add('space-mode');
-        document.getElementById('logo-text').innerText = "ResumeAI™ Pilot";
+    function showReport() {
+        const modal = document.getElementById('feedback-modal');
+        const content = document.getElementById('modal-content');
         
-        // Hide Earth UI and show the Tactical Results
-        document.getElementById('upload-stage').style.display = 'none';
-        document.getElementById('result-stage').style.display = 'block';
-        
-        document.getElementById('score').innerText = "58";
-        document.getElementById('msg').innerHTML = "<b style='color:#ff4d00'>THREAT DETECTED:</b> Atmospheric Ceiling Reached. Manual Repair Required.";
-        
-        // Swap Buttons
-        document.getElementById('retry-btn').style.display = 'none';
-        document.getElementById('vip-btn').style.display = 'block';
-        
-        // Update status for the Space Deck feel
-        document.getElementById('status').innerText = "ORBITAL_STALL_DETECTED";
+        const parts = fullAnalysis.split('[SCAN_2]');
+        const scan1Raw = parts[0].replace('[SCAN_1]', '').trim();
+        const scan2Raw = parts[1] ? parts[1].trim() : "";
+
+        // Executive Markdown Formatter
+        const format = (text) => {
+            return text.replace(/# (.*)/g, '<h1>$1</h1>')
+                       .replace(/### (.*)/g, '<h3>$1</h3>')
+                       .replace(/\*\* (.*)\*\*/g, '<strong>$1</strong>')
+                       .replace(/\* (.*)/g, '<li>$1</li>')
+                       .replace(/---/g, '<hr>')
+                       .replace(/\n/g, '<br>');
+        };
+
+        modal.style.display = 'flex';
+        if (scanCount === 1) {
+            content.innerHTML = `
+                <div class="report-body">${format(scan1Raw)}</div>
+                <button onclick="closeModal()" style="width:100%; padding:20px; background:var(--brand); color:white; border:none; border-radius:14px; margin-top:25px; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:1px;">Manual Correction & Re-Scan</button>
+            `;
+        } else {
+            document.body.classList.add('dark-mode');
+            content.innerHTML = `
+                <div class="report-body">${format(scan2Raw)}</div>
+                <button onclick="window.location.href='payment.html'" style="width:100%; padding:20px; background:var(--brand); color:white; border:none; border-radius:14px; margin-top:25px; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:1px;">Uplink to Pilot Expertise (PRO)</button>
+            `;
+        }
     }
 
-    function redirectToPilot() {
-        const pilotName = "Pilot_Asset"; 
-        // UPDATED TO YOUR LIVE LINK
-        const PILOT_URL = "https://resume-pi-chi.vercel.app/onboarding.html";
-        window.location.href = `${PILOT_URL}?source=resumeai&pilot=${pilotName}&price=99`;
+    function closeModal() {
+        document.getElementById('feedback-modal').style.display = 'none';
+        document.getElementById('input-stage').style.display = 'block';
+        document.getElementById('scan-container').style.display = 'none';
+        document.getElementById('headline').innerHTML = "Secondary <span style='font-style: italic;'>Tactical</span> Scan";
     }
 </script>
-  </script>
 </body>
 </html>
