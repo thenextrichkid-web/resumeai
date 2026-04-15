@@ -13,13 +13,20 @@
         .diamond-mark { width: 22px; height: 22px; background: var(--brand); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 50% 35%, 65% 50%, 50% 65%, 35% 50%); }
         .logo-name { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: bold; }
         .container { max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; }
+        
+        /* AUTH SCREEN */
+        #auth-stage { background: white; padding: 40px; border-radius: 32px; border: 1px solid var(--border); }
+        
         .input-group { text-align: left; margin-bottom: 22px; }
         label { font-size: 10px; font-weight: 800; color: var(--brand); margin-bottom: 8px; display: block; letter-spacing: 1px; }
         input, textarea, select { width: 100%; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); font-family: inherit; font-size: 15px; outline: none; box-sizing: border-box; background: white; margin-bottom: 10px; }
+        
         .upload-box { border: 2px dashed var(--border); padding: 50px 20px; border-radius: 28px; background: white; cursor: pointer; transition: 0.3s; margin-top: 15px; }
-        #scan-container { display: none; margin-top: 40px; }
+        #scan-container, #input-stage { display: none; }
+        
         .progress-track { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin: 25px 0; }
         .progress-fill { width: 0%; height: 100%; background: var(--brand); transition: width 0.1s; }
+        
         #feedback-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:2000; align-items:center; justify-content:center; padding:15px; backdrop-filter: blur(12px); }
         .modal-card { background:white; padding:40px; border-radius:32px; max-width:520px; width:100%; text-align:left; color: #1a1a1a; max-height: 85vh; overflow-y: auto; }
         .btn-action { width: 100%; padding: 20px; background: var(--brand); color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 14px; margin-top: 20px; }
@@ -28,13 +35,21 @@
 </head>
 <body>
     <div class="nav"><a href="/" class="logo-wrap"><div class="diamond-mark"></div><span class="logo-name">ResumeAI</span></a></div>
+    
     <div class="container">
-        <div id="input-stage">
+        <div id="auth-stage">
+            <h1 style="font-family:'Instrument Serif';">Pilot <span style="font-style: italic;">Authorization</span></h1>
+            <p style="font-size: 14px; color: #666; margin-bottom: 30px;">Credentials required for high-altitude ATS reconstruction.</p>
             <div class="input-group">
-                <label>PILOT CREDENTIALS (MANDATORY)</label>
-                <input type="text" id="user-name" placeholder="Your Full Name" required>
-                <input type="email" id="user-email" placeholder="Your Email Address" required>
+                <label>IDENTIFICATION</label>
+                <input type="text" id="user-name" placeholder="Full Name" required>
+                <input type="email" id="user-email" placeholder="Email Address" required>
+                <button onclick="authorizePilot()" class="btn-action">Enter Workspace</button>
             </div>
+        </div>
+
+        <div id="input-stage">
+            <h1 id="headline">Initiate <span style="font-style: italic;">Tactical</span> Scan</h1>
             <div class="input-group">
                 <label>ACQUISITION CHANNEL</label>
                 <select id="source-input">
@@ -47,31 +62,34 @@
                 </select>
             </div>
             <div class="input-group"><label>TARGET JOB DESCRIPTION</label><textarea id="jd-input" rows="4" placeholder="Paste requirements..."></textarea></div>
-            <div class="upload-box" onclick="validateAndUpload()">
+            <div class="upload-box" onclick="document.getElementById('file-input').click()">
                 <div style="font-size: 36px; margin-bottom: 10px;">📂</div>
                 <p style="font-weight:700;">Uplink Resume File</p>
                 <input type="file" id="file-input" style="display:none" onchange="initiateScan(this)">
             </div>
         </div>
+
         <div id="scan-container">
             <p id="status-text" style="font-family: monospace; color: var(--brand); font-weight: 800;">DECODING NARRATIVE...</p>
             <div class="progress-track"><div class="progress-fill" id="progress-bar"></div></div>
             <p id="percentage" style="font-family: 'Instrument Serif'; font-size: 38px;">0%</p>
         </div>
     </div>
+
     <div id="feedback-modal"><div class="modal-card" id="modal-content"></div></div>
 
     <script>
         let scanCount = 0;
         let fullAnalysis = "";
 
-        function validateAndUpload() {
+        function authorizePilot() {
             const name = document.getElementById('user-name').value;
             const email = document.getElementById('user-email').value;
-            if (!name || !email) { alert("Pilot Name and Email are mandatory for uplink."); return; }
+            if (!name || !email) { alert("Pilot Name and Email are mandatory."); return; }
             localStorage.setItem('pilot_name', name);
             localStorage.setItem('pilot_email', email);
-            document.getElementById('file-input').click();
+            document.getElementById('auth-stage').style.display = 'none';
+            document.getElementById('input-stage').style.display = 'block';
         }
 
         async function initiateScan(input) {
@@ -118,11 +136,9 @@
             if (scanCount === 1) {
                 content.innerHTML = `<div class="report-body">${format(scan1)}</div><button onclick="closeModal()" class="btn-action">RE-SCAN (MANUAL FIX)</button>`;
             } else {
-                content.innerHTML = `<div class="report-body">${format(scan2)}</div><button onclick="goToPayment()" class="btn-action">UPLINK TO PILOT EXPERTISE (PRO)</button>`;
+                content.innerHTML = `<div class="report-body">${format(scan2)}</div><button onclick="window.location.href='payment.html'" class="btn-action">UPLINK TO PILOT EXPERTISE (PRO)</button>`;
             }
         }
-
-        function goToPayment() { window.location.href = 'payment.html'; }
 
         function closeModal() {
             document.getElementById('feedback-modal').style.display = 'none';
