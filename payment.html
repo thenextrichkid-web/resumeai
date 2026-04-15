@@ -18,11 +18,13 @@
 
         .note-box { background: rgba(232, 66, 10, 0.1); border: 1px solid rgba(232, 66, 10, 0.3); padding: 15px; border-radius: 12px; font-size: 11px; color: #ff8e6e; margin: 20px 0; line-height: 1.5; text-align: left; }
         .qr-wrap { background: white; padding: 15px; border-radius: 20px; width: 160px; margin: 20px auto; }
-        .qr-wrap img { width: 100%; }
+        .qr-wrap img { width: 100%; border-radius: 10px; }
 
-        .btn-action { width: 100%; padding: 18px; background: var(--brand); color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 13px; margin-top: 10px; }
-        .btn-whatsapp { background: #25D366; }
-        .upi-copy { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 12px; border-radius: 12px; margin: 10px 0; font-family: monospace; cursor: pointer; display: flex; justify-content: space-between; font-size: 12px; }
+        .btn-action { width: 100%; padding: 18px; background: var(--brand); color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 13px; margin-top: 10px; transition: 0.3s; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(232, 66, 10, 0.4); }
+        .btn-whatsapp { background: #25D366; margin-top: 15px; }
+        .upi-copy { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 12px; border-radius: 12px; margin: 10px 0; font-family: monospace; cursor: pointer; display: flex; justify-content: space-between; font-size: 12px; transition: 0.3s; }
+        .upi-copy:hover { background: rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -41,7 +43,7 @@
 
         <div class="qr-wrap"><img src="qr-code.jpg" alt="Scan to Pay"></div>
 
-        <button onclick="openUPI()" class="btn-action">UNLOCK PILOT ACCESS</button>
+        <button onclick="openUPI()" class="btn-action" id="payBtn">UNLOCK PILOT ACCESS</button>
         
         <div class="upi-copy" onclick="copyUPI('8309167536@seyes')">
             <span id="upi-val">8309167536@seyes</span><span style="color:var(--brand)">COPY ID</span>
@@ -64,37 +66,46 @@
 
         function copyUPI(id) {
             navigator.clipboard.writeText(id);
-            document.getElementById('upi-val').innerText = "COPIED!";
-            setTimeout(() => { document.getElementById('upi-val').innerText = id; }, 2000);
+            const valEl = document.getElementById('upi-val');
+            const oldText = valEl.innerText;
+            valEl.innerText = "COPIED!";
+            setTimeout(() => { valEl.innerText = id; }, 2000);
         }
 
         function sendWhatsApp() {
             const pName = localStorage.getItem('pilot_name') || 'Pilot';
             window.location.href = `https://wa.me/918309167536?text=Payment%20Done%20for%20${pName}.%20UTR:%20`;
         }
-        // Check every 5 seconds if the Admin has clicked "Approve"
-const checkStatusInterval = setInterval(async () => {
-    const email = localStorage.getItem('pilot_email');
-    if (!email) return;
 
-    const VERIFY_URL = "https://alliancebusiness.app.n8n.cloud/webhook/verify-payment";
-    try {
-        const response = await fetch(VERIFY_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email })
-        });
-        const result = await response.json();
+        // --- AUTOMATIC APPROVAL DETECTOR ---
+        const checkStatusInterval = setInterval(async () => {
+            const email = localStorage.getItem('pilot_email');
+            if (!email) return;
 
-        if (result.status === "PAID") {
-            clearInterval(checkStatusInterval);
-            alert("UPLINK VERIFIED! Diverting to Flight Deck...");
-            // Redirect them straight to the Pilot Onboarding/Login
-            window.location.href = 'https://resume-pi-chi.vercel.app/onboarding.html';
-        }
-    } catch (e) { console.log("Waiting for ground control..."); }
-}, 5000);
+            // UPDATED TO MATCH YOUR N8N PATH
+            const VERIFY_URL = "https://alliancebusiness.app.n8n.cloud/webhook/verify-pilot";
+            
+            try {
+                const response = await fetch(VERIFY_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                const result = await response.json();
+
+                if (result.status === "PAID") {
+                    clearInterval(checkStatusInterval);
+                    document.getElementById('payBtn').innerText = "UPLINK VERIFIED!";
+                    document.getElementById('payBtn').style.background = "#25D366";
+                    
+                    alert("UPLINK VERIFIED! Diverting to Flight Deck...");
+                    // Redirect to the Pilot Onboarding/Login
+                    window.location.href = 'https://resume-pi-chi.vercel.app/onboarding.html';
+                }
+            } catch (e) { 
+                console.log("Awaiting Ground Control approval..."); 
+            }
+        }, 5000);
     </script>
-    
 </body>
 </html>
