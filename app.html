@@ -15,7 +15,7 @@
         .container { max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; }
         .input-group { text-align: left; margin-bottom: 22px; }
         label { font-size: 10px; font-weight: 800; color: var(--brand); margin-bottom: 8px; display: block; letter-spacing: 1px; }
-        textarea, select { width: 100%; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); font-family: inherit; font-size: 15px; outline: none; box-sizing: border-box; background: white; }
+        input, textarea, select { width: 100%; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); font-family: inherit; font-size: 15px; outline: none; box-sizing: border-box; background: white; margin-bottom: 10px; }
         .upload-box { border: 2px dashed var(--border); padding: 50px 20px; border-radius: 28px; background: white; cursor: pointer; transition: 0.3s; margin-top: 15px; }
         #scan-container { display: none; margin-top: 40px; }
         .progress-track { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin: 25px 0; }
@@ -31,19 +31,23 @@
     <div class="container">
         <div id="input-stage">
             <div class="input-group">
+                <label>PILOT CREDENTIALS (MANDATORY)</label>
+                <input type="text" id="user-name" placeholder="Your Full Name" required>
+                <input type="email" id="user-email" placeholder="Your Email Address" required>
+            </div>
+            <div class="input-group">
                 <label>ACQUISITION CHANNEL</label>
                 <select id="source-input">
                     <option value="LinkedIn">LinkedIn</option>
                     <option value="Instagram">Instagram</option>
                     <option value="Facebook">Facebook</option>
-                    <option value="TikTok">TikTok</option>
                     <option value="WhatsApp">WhatsApp</option>
                     <option value="Google Search">Google Search</option>
                     <option value="Direct Access">Direct Access</option>
                 </select>
             </div>
             <div class="input-group"><label>TARGET JOB DESCRIPTION</label><textarea id="jd-input" rows="4" placeholder="Paste requirements..."></textarea></div>
-            <div class="upload-box" onclick="document.getElementById('file-input').click()">
+            <div class="upload-box" onclick="validateAndUpload()">
                 <div style="font-size: 36px; margin-bottom: 10px;">📂</div>
                 <p style="font-weight:700;">Uplink Resume File</p>
                 <input type="file" id="file-input" style="display:none" onchange="initiateScan(this)">
@@ -58,9 +62,17 @@
     <div id="feedback-modal"><div class="modal-card" id="modal-content"></div></div>
 
     <script>
-        const pName = localStorage.getItem('pilot_name') || 'Guest';
         let scanCount = 0;
         let fullAnalysis = "";
+
+        function validateAndUpload() {
+            const name = document.getElementById('user-name').value;
+            const email = document.getElementById('user-email').value;
+            if (!name || !email) { alert("Pilot Name and Email are mandatory for uplink."); return; }
+            localStorage.setItem('pilot_name', name);
+            localStorage.setItem('pilot_email', email);
+            document.getElementById('file-input').click();
+        }
 
         async function initiateScan(input) {
             if (!document.getElementById('jd-input').value) { alert("Missing JD."); return; }
@@ -68,7 +80,8 @@
             if (!fullAnalysis && input.files[0]) {
                 const formData = new FormData();
                 formData.append('resume', input.files[0]);
-                formData.append('name', pName);
+                formData.append('name', localStorage.getItem('pilot_name'));
+                formData.append('email', localStorage.getItem('pilot_email'));
                 formData.append('source', document.getElementById('source-input').value);
                 formData.append('job_description', document.getElementById('jd-input').value);
                 try {
@@ -76,7 +89,7 @@
                     fullAnalysis = await response.text();
                 } catch (err) { console.error(err); }
             }
-            input.value = ""; // Mobile fix
+            input.value = ""; 
         }
 
         function triggerUI() {
@@ -98,17 +111,18 @@
             const content = document.getElementById('modal-content');
             const parts = fullAnalysis.split('[SCAN_2]');
             const scan1 = parts[0].replace('[SCAN_1]', '').trim();
+            const scan2 = parts[1] ? parts[1].replace('[SCAN_2]', '').trim() : "";
             const format = (text) => text.replace(/# (.*)/g, '<h1>$1</h1>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
 
             modal.style.display = 'flex';
             if (scanCount === 1) {
-                content.innerHTML = `<div class="report-body">${format(scan1)}</div><button onclick="closeModal()" class="btn-action">MANUAL FIX & RE-SCAN</button>`;
+                content.innerHTML = `<div class="report-body">${format(scan1)}</div><button onclick="closeModal()" class="btn-action">RE-SCAN (MANUAL FIX)</button>`;
             } else {
-                // SAVE DATA & GO TO PAYMENT
-                localStorage.setItem('scan2_report', fullAnalysis);
-                window.location.href = 'payment.html';
+                content.innerHTML = `<div class="report-body">${format(scan2)}</div><button onclick="goToPayment()" class="btn-action">UPLINK TO PILOT EXPERTISE (PRO)</button>`;
             }
         }
+
+        function goToPayment() { window.location.href = 'payment.html'; }
 
         function closeModal() {
             document.getElementById('feedback-modal').style.display = 'none';
