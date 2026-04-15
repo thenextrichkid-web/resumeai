@@ -17,73 +17,58 @@
         .container { max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; }
         h1 { font-family: 'Instrument Serif', serif; font-size: clamp(34px, 8vw, 44px); line-height: 1.1; margin-bottom: 25px; }
 
-        .input-group { text-align: left; margin-bottom: 22px; }
-        label { font-size: 10px; font-weight: 800; color: var(--brand); margin-bottom: 8px; display: block; letter-spacing: 1px; }
-        textarea, select { width: 100%; padding: 16px; border-radius: 12px; border: 1.5px solid var(--border); font-family: inherit; font-size: 15px; outline: none; box-sizing: border-box; background: white; }
-        
         .upload-box { border: 2px dashed var(--border); padding: 50px 20px; border-radius: 28px; background: white; cursor: pointer; transition: 0.3s; margin-top: 15px; }
         
         #scan-container { display: none; margin-top: 40px; }
         .progress-track { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin: 25px 0; }
         .progress-fill { width: 0%; height: 100%; background: var(--brand); transition: width 0.1s; }
 
-        #feedback-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:2000; align-items:center; justify-content:center; padding:15px; backdrop-filter: blur(15px); }
-        .modal-card { background:white; padding:40px; border-radius:32px; max-width: 500px; width:100%; text-align:center; color: #1a1a1a; max-height: 85vh; overflow-y: auto; position: relative; transition: all 0.8s; }
+        #feedback-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.96); z-index:2000; align-items:center; justify-content:center; padding:15px; backdrop-filter: blur(15px); }
+        .modal-card { background:white; padding:35px; border-radius:32px; max-width: 480px; width:100%; text-align:center; color: #1a1a1a; max-height: 90vh; overflow-y: auto; position: relative; }
         
         body.space-mode { background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%); }
-        .space-card { background: rgba(15, 15, 25, 0.95) !important; border: 1px solid rgba(232, 66, 10, 0.4) !important; color: white !important; }
-        .shield-glow { font-size: 70px; filter: drop-shadow(0 0 25px rgba(232, 66, 10, 0.8)); margin-bottom: 20px; display: block; }
+        .space-card { background: rgba(10, 10, 20, 0.98) !important; border: 1px solid rgba(232, 66, 10, 0.3) !important; color: white !important; }
         
-        /* PRICE DROP ANIMATION */
-        .price-strike { font-size: 22px; color: #777; margin-right: 12px; transition: 0.5s; position: relative; display: inline-block; }
-        .price-strike.slashed::after { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 2px; background: #777; transform: rotate(-15deg); }
-        .price-active { font-family: 'Instrument Serif'; font-size: 72px; color: var(--brand); opacity: 0; transform: translateY(10px); transition: 1s ease-out; }
+        /* PRICE ANIMATION */
+        .price-strike { font-size: 20px; color: #666; margin-right: 10px; position: relative; display: inline-block; transition: 0.5s; }
+        .price-strike.slashed::after { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 2px; background: #E8420A; transform: rotate(-12deg); }
+        .price-active { font-family: 'Instrument Serif'; font-size: 64px; color: var(--brand); opacity: 0; transform: translateY(10px); transition: 1s ease-out; }
         .price-active.reveal { opacity: 1; transform: translateY(0); }
 
-        .upi-copy-container { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 12px; border-radius: 12px; margin: 20px 0; font-family: monospace; font-size: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .qr-wrap { background: white; padding: 15px; border-radius: 20px; width: 180px; margin: 20px auto; box-shadow: 0 0 30px rgba(232,66,10,0.2); }
+        .qr-wrap img { width: 100%; height: auto; display: block; }
 
-        .btn-action { width: 100%; padding: 20px; background: var(--brand); color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 13px; margin-top: 15px; }
-        .btn-whatsapp { background: #25D366; margin-top: 10px; }
-        .report-body h1 { font-family: 'Instrument Serif'; color: var(--brand); font-size: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; text-align: left; }
+        .upi-copy { background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 12px; border-radius: 10px; margin: 15px 0; font-family: monospace; cursor: pointer; display: flex; justify-content: space-between; font-size: 13px; }
+
+        .btn-action { width: 100%; padding: 18px; background: var(--brand); color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 12px; margin-top: 10px; }
+        .btn-whatsapp { background: #25D366; }
     </style>
 </head>
 <body>
 
 <div class="nav">
-    <a href="/" class="logo-wrap">
-        <div class="diamond-mark"></div>
-        <span class="logo-name">ResumeAI</span>
-    </a>
+    <a href="/" class="logo-wrap"><div class="diamond-mark"></div><span class="logo-name">ResumeAI</span></a>
     <div class="nav-links">
-        <a onclick="alert('Strategy: Multi-Pass ATS Alignment Active.')">Strategy</a>
+        <a onclick="alert('Strategy: Multi-Pass AI Calibration Active.')">Strategy</a>
         <a onclick="alert('Support: 8309167536@seyes')">Contact</a>
     </div>
 </div>
 
 <div class="container">
     <div class="pilot-welcome" id="pilot-display">PILOT AUTH REQUIRED</div>
-    <h1 id="headline">Initiate <span style="font-style: italic;">Tactical</span> Scan</h1>
+    <h1>Initiate <span style="font-style: italic;">Tactical</span> Scan</h1>
     
     <div id="input-stage">
-        <div class="input-group">
-            <label>ACQUISITION CHANNEL</label>
-            <select id="source-input">
-                <option value="LinkedIn">LinkedIn</option>
-                <option value="Instagram">Instagram</option>
-                <option value="WhatsApp">WhatsApp</option>
-                <option value="Direct">Direct Access</option>
-            </select>
-        </div>
-        <div class="input-group"><label>TARGET JOB DESCRIPTION</label><textarea id="jd-input" rows="4" placeholder="Paste requirements..."></textarea></div>
+        <textarea id="jd-input" rows="4" style="width:100%; padding:15px; border-radius:12px; border:1px solid var(--border); margin-bottom:20px;" placeholder="Paste Job Description..."></textarea>
         <div class="upload-box" onclick="document.getElementById('file-input').click()">
-            <div style="font-size: 36px; margin-bottom: 10px;">📂</div>
+            <div style="font-size: 32px; margin-bottom: 10px;">📂</div>
             <p style="font-weight:700;">Uplink Resume File</p>
             <input type="file" id="file-input" style="display:none" onchange="initiateScan(this)">
         </div>
     </div>
 
     <div id="scan-container">
-        <p id="status-text" style="font-family: monospace; color: var(--brand); font-weight: 800;">DECODING NARRATIVE...</p>
+        <p id="status-text" style="font-family: monospace; color: var(--brand); font-weight: 800;">DECODING...</p>
         <div class="progress-track"><div class="progress-fill" id="progress-bar"></div></div>
         <p id="percentage" style="font-family: 'Instrument Serif'; font-size: 38px;">0%</p>
     </div>
@@ -93,33 +78,25 @@
 
 <script>
     const pName = localStorage.getItem('pilot_name') || 'Guest';
-    const pEmail = localStorage.getItem('pilot_email') || 'Unknown';
-    document.getElementById('pilot-display').innerText = `PILOT: ${pName.toUpperCase()}`;
-
     let scanCount = 0;
     let fullAnalysis = "";
 
     async function initiateScan(input) {
-        if (!document.getElementById('jd-input').value) { alert("Missing JD."); return; }
+        if (!document.getElementById('jd-input').value) { alert("JD Required."); return; }
         triggerUI();
 
         if (!fullAnalysis && input.files && input.files[0]) {
             const formData = new FormData();
             formData.append('resume', input.files[0]);
-            formData.append('name', pName);
-            formData.append('email', pEmail);
-            formData.append('source', document.getElementById('source-input').value);
             formData.append('job_description', document.getElementById('jd-input').value);
+            formData.append('name', pName);
 
             try {
                 const response = await fetch('https://alliancebusiness.app.n8n.cloud/webhook/resume-scan', { method: 'POST', body: formData });
-                if (response.ok) {
-                    const raw = await response.text();
-                    try { const parsed = JSON.parse(raw); fullAnalysis = parsed.text || raw; } catch(e) { fullAnalysis = raw; }
-                }
+                fullAnalysis = await response.text();
             } catch (err) { console.error(err); }
         }
-        input.value = ""; // Fixes same-file mobile issue
+        input.value = ""; 
     }
 
     function triggerUI() {
@@ -141,63 +118,56 @@
         const content = document.getElementById('modal-content');
         const parts = fullAnalysis.split('[SCAN_2]');
         const scan1 = parts[0].replace('[SCAN_1]', '').trim();
-        const scan2 = parts[1] ? parts[1].trim() : "";
-        
-        const format = (text) => text.replace(/# (.*)/g, '<h1>$1</h1>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+        const format = (t) => t.replace(/# (.*)/g, '<h1>$1</h1>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
 
         modal.style.display = 'flex';
         if (scanCount === 1) {
             content.className = "modal-card";
-            content.innerHTML = `<div class="report-body">${format(scan1)}</div><button onclick="closeModal()" class="btn-action">RE-SCAN (MANUAL FIX)</button>`;
+            content.innerHTML = `<div style="text-align:left;">${format(scan1)}</div><button onclick="closeModal()" class="btn-action">MANUAL FIX & RE-SCAN</button>`;
         } else {
-            triggerBridge();
+            triggerSpaceBridge();
         }
     }
 
-    function triggerBridge() {
-        const modal = document.getElementById('feedback-modal');
+    function triggerSpaceBridge() {
         const content = document.getElementById('modal-content');
         document.body.classList.add('space-mode');
         content.className = "modal-card space-card";
-        
         const upiID = "8309167536@seyes";
-        const upiLink = `upi://pay?pa=${upiID}&pn=ResumeAI&mc=0000&tr=${Date.now()}&tn=ResumeAI%20Uplink&am=99&cu=INR`;
-        const waMsg = encodeURIComponent(`I have initiated my 100% Reconstruct for ${pName}. UTR: `);
+        const upiLink = `upi://pay?pa=${upiID}&pn=ResumeAI&am=99&cu=INR`;
 
         content.innerHTML = `
-            <div style="background:var(--brand); color:white; padding:5px 12px; border-radius:4px; display:inline-block; font-size:10px; font-weight:900; margin-bottom:15px;">90% RECON DISCOUNT APPLIED</div>
+            <div style="background:var(--brand); padding:5px 10px; border-radius:4px; font-size:10px; font-weight:900; display:inline-block; margin-bottom:10px;">90% RECON DISCOUNT</div>
             <div class="shield-glow">🛡️</div>
-            <h1 style="font-family:'Instrument Serif'; margin-bottom:5px;">Deep Reconstruct</h1>
-            <div style="margin:20px 0;">
+            <div style="margin:10px 0;">
                 <span id="strike-p" class="price-strike">₹999</span>
                 <div id="reveal-p" class="price-active">₹99</div>
             </div>
 
-            <p style="font-size:14px; color:#aaa; margin-bottom:20px;">Authorize Pilot Uplink for 100% Reconstruct.</p>
-
-            <button onclick="window.location.href='${upiLink}'" class="btn-action">OPEN UPI APP</button>
-            
-            <div class="upi-copy-container" onclick="copyUPI('${upiID}')">
-                <span id="upi-text">${upiID}</span>
-                <span style="color:var(--brand); font-size:11px;">COPY ID</span>
+            <div class="qr-wrap">
+                <img src="qr-code.jpg" alt="Scan to Pay">
             </div>
 
-            <p style="font-size:11px; color:#777;">If UPI App blocks, copy ID & pay manually. Send UTR via WhatsApp.</p>
+            <button onclick="window.location.href='${upiLink}'" class="btn-action">Unlock Pro AccessP</button>
 
-            <button onclick="window.location.href='https://wa.me/918309167536?text=${waMsg}'" class="btn-action btn-whatsapp">SEND UTR VIA WHATSAPP</button>
-            <a onclick="closeModal()" style="display:block; margin-top:20px; color:#555; font-size:11px; cursor:pointer;">Return to Hangar</a>
+            <div class="upi-copy" onclick="copyUPI('${upiID}')">
+                <span id="upi-val">${upiID}</span><span style="color:var(--brand)">COPY</span>
+            </div>
+
+            <button onclick="window.location.href='https://wa.me/918309167536?text=Payment%20Done'" class="btn-action btn-whatsapp">SEND UTR VIA WHATSAPP</button>
+            <a onclick="closeModal()" style="display:block; margin-top:15px; font-size:10px; color:#555; cursor:pointer;">CLOSE</a>
         `;
 
         setTimeout(() => {
             document.getElementById('strike-p').classList.add('slashed');
             document.getElementById('reveal-p').classList.add('reveal');
-        }, 1500);
+        }, 1200);
     }
 
     function copyUPI(id) {
         navigator.clipboard.writeText(id);
-        document.getElementById('upi-text').innerText = "COPIED!";
-        setTimeout(() => { document.getElementById('upi-text').innerText = id; }, 2000);
+        document.getElementById('upi-val').innerText = "COPIED!";
+        setTimeout(() => { document.getElementById('upi-val').innerText = id; }, 2000);
     }
 
     function closeModal() {
@@ -205,7 +175,6 @@
         document.getElementById('input-stage').style.display = 'block';
         document.getElementById('scan-container').style.display = 'none';
         document.body.classList.remove('space-mode');
-        document.getElementById('headline').innerHTML = "Secondary <span style='font-style: italic;'>Tactical</span> Scan";
     }
 </script>
 </body>
