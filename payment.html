@@ -72,6 +72,29 @@
             const pName = localStorage.getItem('pilot_name') || 'Pilot';
             window.location.href = `https://wa.me/918309167536?text=Payment%20Done%20for%20${pName}.%20UTR:%20`;
         }
+        // Check every 5 seconds if the Admin has clicked "Approve"
+const checkStatusInterval = setInterval(async () => {
+    const email = localStorage.getItem('pilot_email');
+    if (!email) return;
+
+    const VERIFY_URL = "https://alliancebusiness.app.n8n.cloud/webhook/verify-payment";
+    try {
+        const response = await fetch(VERIFY_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+        });
+        const result = await response.json();
+
+        if (result.status === "PAID") {
+            clearInterval(checkStatusInterval);
+            alert("UPLINK VERIFIED! Diverting to Flight Deck...");
+            // Redirect them straight to the Pilot Onboarding/Login
+            window.location.href = 'https://resume-pi-chi.vercel.app/onboarding.html';
+        }
+    } catch (e) { console.log("Waiting for ground control..."); }
+}, 5000);
     </script>
+    
 </body>
 </html>
