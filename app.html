@@ -31,24 +31,21 @@
         .progress-fill { width: 0%; height: 100%; background: var(--brand); transition: width 0.1s; }
 
         #feedback-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:2000; align-items:center; justify-content:center; padding:15px; backdrop-filter: blur(12px); }
-        .modal-card { background:white; padding:40px; border-radius:32px; max-width:520px; width:100%; text-align:left; color: #1a1a1a; max-height: 85vh; overflow-y: auto; position: relative; transition: all 0.8s; }
+        .modal-card { background:white; padding:40px; border-radius:32px; max-width: 520px; width:100%; text-align:left; color: #1a1a1a; max-height: 85vh; overflow-y: auto; position: relative; transition: all 0.8s; }
         
         body.space-mode { background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%); }
         .space-card { background: rgba(15, 15, 25, 0.9) !important; border: 1px solid rgba(232, 66, 10, 0.4) !important; color: white !important; text-align: center !important; }
         .shield-glow { font-size: 75px; filter: drop-shadow(0 0 25px rgba(232, 66, 10, 0.8)); margin: 20px auto; display: block; }
         
-        /* PRICE ANIMATION CSS */
-        .price-strike { font-size: 22px; color: #777; margin-right: 12px; transition: 0.5s; }
-        .price-strike.slashed { text-decoration: line-through; opacity: 0.5; }
+        /* PRICE ANIMATION */
+        .price-strike { font-size: 22px; color: #777; margin-right: 12px; transition: 0.5s; position: relative; display: inline-block; }
+        .price-strike.slashed::after { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 2px; background: #777; transform: rotate(-15deg); }
         .price-active { font-family: 'Instrument Serif'; font-size: 78px; color: var(--brand); opacity: 0; transform: translateY(10px); transition: 1s ease-out; }
         .price-active.reveal { opacity: 1; transform: translateY(0); }
 
-        .upi-box { border: 2px dashed var(--brand); padding: 20px; border-radius: 16px; background: rgba(232, 66, 10, 0.08); font-family: monospace; font-size: 16px; color: #ff8e6e; margin: 20px 0; word-break: break-all; }
         .btn-action { width: 100%; padding: 20px; background: var(--brand); color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 14px; margin-top: 20px; }
         .btn-whatsapp { background: #25D366; margin-top: 10px; }
-
         .report-body h1 { font-family: 'Instrument Serif'; color: var(--brand); font-size: 32px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .report-body p { line-height: 1.7; font-size: 16px; }
     </style>
 </head>
 <body>
@@ -60,7 +57,7 @@
     </a>
     <div class="nav-links">
         <a onclick="alert('Strategy: 4-Pass ATS Alignment Algorithm Active.')">Strategy</a>
-        <a onclick="alert('Support: alliancebusiness.abs@okaxis')">Contact</a>
+        <a onclick="alert('Support: 8309167536@seyes')">Contact</a>
     </div>
 </div>
 
@@ -73,6 +70,10 @@
             <label>ACQUISITION CHANNEL</label>
             <select id="source-input">
                 <option value="LinkedIn">LinkedIn</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="TikTok">TikTok</option>
+                <option value="WhatsApp">WhatsApp</option>
                 <option value="Google">Google Search</option>
                 <option value="Direct">Direct Access</option>
             </select>
@@ -104,11 +105,8 @@
 
     async function initiateScan(input) {
         if (!document.getElementById('jd-input').value) { alert("Insufficient JD."); return; }
-        
-        // UI always triggers for the "experience"
         triggerUI();
 
-        // ONLY call API if we don't already have the data (prevents double n8n execution)
         if (!fullAnalysis && input.files && input.files[0]) {
             const formData = new FormData();
             formData.append('resume', input.files[0]);
@@ -154,16 +152,10 @@
         
         if (scanCount === 1) {
             content.className = "modal-card";
-            content.innerHTML = `
-                <div class="report-body">${format(scan1)}</div>
-                <button onclick="closeModal()" class="btn-action">MANUAL CORRECTION & RE-SCAN</button>
-            `;
+            content.innerHTML = `<div class="report-body">${format(scan1)}</div><button onclick="closeModal()" class="btn-action">MANUAL CORRECTION & RE-SCAN</button>`;
         } else {
             content.className = "modal-card";
-            content.innerHTML = `
-                <div class="report-body">${format(scan2)}</div>
-                <button onclick="triggerBridge()" class="btn-action">UPLINK TO PILOT EXPERTISE (PRO)</button>
-            `;
+            content.innerHTML = `<div class="report-body">${format(scan2)}</div><button onclick="triggerBridge()" class="btn-action">UPLINK TO PILOT EXPERTISE (PRO)</button>`;
         }
     }
 
@@ -183,9 +175,8 @@
                 <span id="strike-p" class="price-strike">₹999</span>
                 <div id="reveal-p" class="price-active">₹99</div>
             </div>
-            <div class="upi-box">UPI ID: 8309167536@seyes</div>
-            <button onclick="window.location.href='${upiLink}'" class="btn-action">OPEN UPI APP</button>
-            <p style="font-size:11px; color:#888; margin-top:15px;">Note: Please send UTR code via WhatsApp for instant activation.</p>
+            <button onclick="window.location.href='${upiLink}'" class="btn-action">OPEN UPI APP TO PAY</button>
+            <p style="font-size:11px; color:#888; margin-top:15px;">Send UTR Transaction ID via WhatsApp for instant activation.</p>
             <button onclick="window.location.href='https://wa.me/918309167536?text=${waMsg}'" class="btn-action btn-whatsapp">SEND UTR VIA WHATSAPP</button>
             <a onclick="closeModal()" style="display:block; margin-top:20px; color:#555; font-size:11px; cursor:pointer;">Return to Hangar</a>
         `;
@@ -201,7 +192,6 @@
         document.getElementById('input-stage').style.display = 'block';
         document.getElementById('scan-container').style.display = 'none';
         document.body.classList.remove('space-mode');
-        // NOTE: We no longer clear fullAnalysis here so the 2nd scan is instant and free!
         document.getElementById('headline').innerHTML = "Secondary <span style='font-style: italic;'>Tactical</span> Scan";
     }
 </script>
