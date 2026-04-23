@@ -22,20 +22,52 @@
 <body>
     <nav><a href="index.html" class="logo-wrap"><div class="diamond-mark"></div><span style="font-family:'Instrument Serif'; font-weight:bold; font-size:24px;">ResumeAI</span></a></nav>
     <div class="container">
-        <h1>Connect with <span style="font-style: italic;">ABS Experts</span></h1>
+        <h1>Connect with <span style="font-style: italic;">AXONIC Experts</span></h1>
         <div class="card">
             <p style="margin-bottom:30px; color:#666;">For technical support, Pro upgrades, or Enterprise AI consulting, please submit your query below.</p>
-            <label>FULL NAME</label><input type="text">
-            <label>EMAIL ADDRESS</label><input type="email">
-            <label>ENQUIRY TYPE</label>
-            <select style="width:100%; padding:15px; border-radius:12px; border:1px solid var(--border); margin-bottom:20px;">
-                <option>Technical Support</option>
-                <option>Enterprise AI Consulting</option>
-                <option>ResumePilot Pro Upgrade</option>
-            </select>
-            <label>MESSAGE</label><textarea rows="5"></textarea>
-            <button class="btn">Submit Tactical Request</button>
+            <form id="contactForm" onsubmit="submitContact(event)">
+                <label for="contact-name">FULL NAME</label><input type="text" id="contact-name" name="name">
+                <label for="contact-email">EMAIL ADDRESS</label><input type="email" id="contact-email" name="email">
+                <label for="contact-enquiry">ENQUIRY TYPE</label>
+                <select id="contact-enquiry" name="enquiry" style="width:100%; padding:15px; border-radius:12px; border:1px solid var(--border); margin-bottom:20px;">
+                    <option>Technical Support</option>
+                    <option>Enterprise AI Consulting</option>
+                    <option>ResumePilot Pro Upgrade</option>
+                </select>
+                <label for="contact-message">MESSAGE</label><textarea id="contact-message" name="message" rows="5"></textarea>
+                <button type="submit" class="btn" id="submitBtn">Submit Tactical Request</button>
+            </form>
         </div>
     </div>
+
+    <script>
+        async function submitContact(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Transmitting...";
+            
+            const payload = {
+                name: document.getElementById('contact-name').value,
+                email: document.getElementById('contact-email').value,
+                enquiry: document.getElementById('contact-enquiry').value,
+                message: document.getElementById('contact-message').value
+            };
+
+            try {
+                // Set up a new n8n webhook specifically for the contact form
+                await fetch('https://YOUR_NGROK_URL/webhook/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                btn.innerText = "Request Received";
+                btn.style.background = "#10b981";
+                document.getElementById('contactForm').reset();
+            } catch (err) {
+                alert("Transmission failed. Please email axonic.briefings@gmail.com directly.");
+                btn.innerText = "Submit Tactical Request";
+            }
+        }
+    </script>
 </body>
 </html>

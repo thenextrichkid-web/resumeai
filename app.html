@@ -34,7 +34,7 @@
     </style>
 </head>
 <body>
-    <div class="nav"><a href="/" class="logo-wrap"><div class="diamond-mark"></div><span class="logo-name">ResumeAI</span></a></div>
+    <div class="nav"><a href="index.html" class="logo-wrap"><div class="diamond-mark"></div><span class="logo-name">ResumeAI</span></a></div>
     
     <div class="container">
         <div id="auth-stage">
@@ -82,10 +82,19 @@
         let scanCount = 0;
         let fullAnalysis = "";
 
+        window.onload = () => {
+            const savedEmail = localStorage.getItem('pilot_email');
+            if (savedEmail && savedEmail.includes('@')) {
+                document.getElementById('auth-stage').style.display = 'none';
+                document.getElementById('input-stage').style.display = 'block';
+            }
+        };
+
         function authorizePilot() {
             const name = document.getElementById('user-name').value;
             const email = document.getElementById('user-email').value;
             if (!name || !email) { alert("Pilot Name and Email are mandatory."); return; }
+            if (!email.includes('@') || !email.includes('.')) { alert("Please enter a valid email address."); return; }
             localStorage.setItem('pilot_name', name);
             localStorage.setItem('pilot_email', email);
             document.getElementById('auth-stage').style.display = 'none';
@@ -102,10 +111,18 @@
                 formData.append('email', localStorage.getItem('pilot_email'));
                 formData.append('source', document.getElementById('source-input').value);
                 formData.append('job_description', document.getElementById('jd-input').value);
+                formData.append('scan_count', scanCount + 1);
                 try {
-                    const response = await fetch('https://alliancebusiness.app.n8n.cloud/webhook/resume-scan', { method: 'POST', body: formData });
+                    const response = await fetch('https://YOUR_NGROK_URL/webhook/resume-scan', { method: 'POST', body: formData });
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok. Status: ${response.status}`);
+                    }
                     fullAnalysis = await response.text();
-                } catch (err) { console.error(err); }
+                } catch (err) {
+                    console.error('Fetch Error:', err);
+                    alert('Analysis failed. The server could not be reached. Please check your connection or try again later.');
+                    closeModal(); // Reset the UI
+                }
             }
             input.value = ""; 
         }
