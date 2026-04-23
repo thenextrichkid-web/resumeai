@@ -83,7 +83,7 @@
             btn.innerText = "VERIFYING UPLINK...";
             
             try {
-                const res = await fetch('https://YOUR_NGROK_URL/webhook/verify-pilot', {
+                const res = await fetch('https://drone-unleash-diving.ngrok-free.dev/webhook/verify-pilot', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email })

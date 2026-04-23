@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ResumeAI — Tactical Analysis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.mjs" type="module"></script>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --brand: #E8420A; --bg: #fafaf8; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
@@ -102,18 +104,65 @@
         }
 
         async function initiateScan(input) {
-            if (!document.getElementById('jd-input').value) { alert("Missing JD."); return; }
+            const file = input.files[0];
+            if (!document.getElementById('jd-input').value) { alert("Missing Job Description."); input.value = ""; return; }
+            if (!file) return;
+
             triggerUI();
+
+            let extractedText = '';
+            try {
+                if (file.type === "application/pdf") {
+                    const pdfjsLib = await import('https://mozilla.github.io/pdf.js/build/pdf.mjs');
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://mozilla.github.io/pdf.js/build/pdf.worker.mjs`;
+                    const fileReader = new FileReader();
+                    extractedText = await new Promise((resolve, reject) => {
+                        fileReader.onload = async function() {
+                            try {
+                                const typedarray = new Uint8Array(this.result);
+                                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                                let text = '';
+                                for (let i = 1; i <= pdf.numPages; i++) {
+                                    const page = await pdf.getPage(i);
+                                    const content = await page.getTextContent();
+                                    text += content.items.map(item => item.str).join(' ') + '\n';
+                                }
+                                resolve(text);
+                            } catch (e) { reject(e); }
+                        };
+                        fileReader.readAsArrayBuffer(file);
+                    });
+                } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                    const fileReader = new FileReader();
+                    extractedText = await new Promise((resolve, reject) => {
+                        fileReader.onload = async function() {
+                            try {
+                                const result = await mammoth.extractRawText({ arrayBuffer: this.result });
+                                resolve(result.value);
+                            } catch(e) { reject(e); }
+                        };
+                        fileReader.readAsArrayBuffer(file);
+                    });
+                } else {
+                    throw new Error("Unsupported file type. Please use PDF or DOCX.");
+                }
+            } catch (e) {
+                console.error("File parsing error:", e);
+                alert("Could not read the resume file. It might be corrupted or an unsupported format.");
+                closeModal();
+                return;
+            }
+
             if (!fullAnalysis && input.files[0]) {
                 const formData = new FormData();
-                formData.append('resume', input.files[0]);
+                formData.append('resume_text', extractedText); // Sending extracted text instead of the file
                 formData.append('name', localStorage.getItem('pilot_name'));
                 formData.append('email', localStorage.getItem('pilot_email'));
                 formData.append('source', document.getElementById('source-input').value);
                 formData.append('job_description', document.getElementById('jd-input').value);
                 formData.append('scan_count', scanCount + 1);
                 try {
-                    const response = await fetch('https://drone-unleash-diving.ngrok-free.dev/webhook/resume-scan', { method: 'POST', body: formData });
+                    const response = await fetch('https://drone-unleash-diving.ngrok-free.dev/webhook/resume-scan', { method: 'POST', body: formData }); // Production webhook
                     if (!response.ok) {
                         throw new Error(`Network response was not ok. Status: ${response.status}`);
                     }
@@ -121,7 +170,7 @@
                 } catch (err) {
                     console.error('Fetch Error:', err);
                     alert('Analysis failed. The server could not be reached. Please check your connection or try again later.');
-                    closeModal(); // Reset the UI
+                    closeModal();
                 }
             }
             input.value = ""; 
